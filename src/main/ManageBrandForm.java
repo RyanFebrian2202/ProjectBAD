@@ -18,7 +18,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class ManageBranchForm extends Application{
+public class ManageBrandForm extends Application{
 	
 	Scene scene;
 	BorderPane bPane;
