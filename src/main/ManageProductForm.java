@@ -79,7 +79,7 @@ public class ManageProductForm extends Application {
 	
 	public void arrangeComponent() {
 		
-		TableView tableView = new TableView();
+		TableView<Watch> tableView = new TableView<>();
 
 		TableColumn<Watch, String> column1 = new TableColumn<>("Watch ID");
 		column1.setCellValueFactory(new PropertyValueFactory<>("watchId"));
