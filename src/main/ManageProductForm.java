@@ -145,7 +145,17 @@ public class ManageProductForm extends Application {
 		arrangeComponent();
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Manage Product");
-		primaryStage.show();
+		//primaryStage.show();
 	}
+	
+	
+//	public Scene manageProduct() {
+//		initialize();
+//		arrangeComponent();
+//		
+//		scene = new Scene(bPane, 650, 550);
+//		
+//		return scene;
+//	}
 
 }

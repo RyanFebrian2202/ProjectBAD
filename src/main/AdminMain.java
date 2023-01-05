@@ -38,16 +38,11 @@ public class AdminMain extends Application{
 		managementMenu.getItems().add(manageBrandMI);
 		
 		
-		
 		bPane.setTop(menuBar);
 		scene = new Scene(bPane,500,500);
 		
 		logOutMI.setOnAction((event) -> {
 			System.out.println("Balik ke Login");
-		});
-		
-		manageProductMI.setOnAction((event) -> {
-			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
 		});
 		
 		manageBrandMI.setOnAction((event) -> {
@@ -58,7 +53,6 @@ public class AdminMain extends Application{
 	
 	public static void main(String[] args) {
 		launch(args);
-
 	}
 
 	@Override
@@ -66,10 +60,29 @@ public class AdminMain extends Application{
 		initialize();
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Main Page");
-		primaryStage.show();
 		
+		manageProductMI.setOnAction((event) -> {
+			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
+			ManageProductForm mpf = new ManageProductForm();
+			try {
+				mpf.start(primaryStage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		logOutMI.setOnAction((event) -> {
+			System.out.println("Balik ke Login");
+			LoginRegisForm lrf = new LoginRegisForm();
+			try {
+				lrf.start(primaryStage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		primaryStage.show();
 	}
-
-	
-
 }

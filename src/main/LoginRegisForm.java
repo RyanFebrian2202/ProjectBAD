@@ -264,12 +264,20 @@ public class LoginRegisForm extends Application{
 		
 		initRegis();
 		
-		 regisinsteadBtn.setOnAction( (event) -> {
+		regisinsteadBtn.setOnAction( (event) -> {
 			 primaryStage.setScene(sceneRegis);
 		});
 	    	
 	    loginBtn.setOnAction( (event) -> {
 	    	System.out.println("Masuk Aplikasi");
+	    	AdminMain am = new AdminMain();
+	    	try {
+				am.start(primaryStage);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	primaryStage.show();
 	    });
 	    	
 	    regisBtn.setOnAction( (event) -> {
@@ -283,7 +291,7 @@ public class LoginRegisForm extends Application{
 		
 		primaryStage.setTitle("Login");
 		primaryStage.setScene(scene);
-		primaryStage.show();
+		//primaryStage.show();
     	
 		
 	}
