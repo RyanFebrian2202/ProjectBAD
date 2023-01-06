@@ -26,7 +26,8 @@ public class BuyProductForm extends Application{
 	Button addWatchToCartBtn, clearCartBtn, checkOutBtn;
 	Spinner<Integer> quantitySp;
 	
-	TableView<Watch> watchTable, cartTable;
+	TableView<Watch> watchTable; 
+	TableView<Cart> cartTable;
 
 	
 	
@@ -52,14 +53,17 @@ public class BuyProductForm extends Application{
 	
 	public void setTableCart() {
 		cartTable = new TableView<>();
-//		TableColumn<Watch, String> col1 = new TableColumn<Watch, String>("User ID");
-//		TableColumn<Watch, String> col2 = new TableColumn<Watch, String>("Watch ID");
-//		TableColumn col3 = new TableColumn<> ("Quantity");
-//
-//		
-//		col1.setCellValueFactory(new PropertyValueFactory<Watch, String>("UserID"));
-//		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchID"));
-//		col3.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+		TableColumn<Cart, String> col1 = new TableColumn<Cart, String>("User ID");
+		TableColumn<Cart, String> col2 = new TableColumn<Cart, String>("Watch ID");
+		TableColumn<Cart, Integer>col3 = new TableColumn<Cart, Integer>("Quantity");
+
+		
+		col1.setCellValueFactory(new PropertyValueFactory<Cart, String>("User ID"));
+		col2.setCellValueFactory(new PropertyValueFactory<Cart, String>("Watch ID"));
+		col3.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
+		
+		//add ke table pakai colom
+		cartTable.getColumns().addAll(col1,col2,col3);
 	}
 	
 	public void init() {
