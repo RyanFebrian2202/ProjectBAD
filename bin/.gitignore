@@ -1,7 +1,12 @@
+<<<<<<< HEAD
 /bin/
 /.classpath
 /.gitignore
 /.project
 /.settings/
+=======
+/.classpath
+/.project
+>>>>>>> 1020eca44d6a20314ab5aba3ee49e96351017fd6
 /main/
 /module-info.class
