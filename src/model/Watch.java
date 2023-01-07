@@ -1,4 +1,4 @@
-package main;
+package model;
 
 public class Watch {
 	protected String WatchID, WatchName, WatchBrand;

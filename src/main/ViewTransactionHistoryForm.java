@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.TransactionHistory;
+import model.Watch;
 
 public class ViewTransactionHistoryForm extends Application {
 
