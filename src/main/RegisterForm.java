@@ -5,10 +5,12 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -18,6 +20,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -31,174 +34,222 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class RegisterForm extends Application {
-	Scene scene;
-	GridPane grid;
-	StackPane stackPane;
-
-	Label titleLbl, nameLbl, genderLbl, emailLbl, passwordLbl, confirmPasswordLbl;
-	TextField emailTF, nameTF;
-	RadioButton maleRB, femaleRB;
-	ToggleGroup genderTG;
-	PasswordField passwordPF, confirmPasswordPF;
+	GridPane gridRegis;
+	BorderPane bPaneRegis, LoginFormPage;
+	StackPane stackPaneRegis;
+	
+	Label titleLblRegis, nameLblRegis, genderLblRegis, emailLblRegis, passwordLblRegis, confirmPasswordLblRegis;
+	TextField emailTFRegis, nameTFRegis;
+	RadioButton maleRBRegis, femaleRBRegis;
+	ToggleGroup genderTGRegis;
+	PasswordField passwordPFRegis, confirmPasswordPFRegis;
 	Button regisBtn, backToLoginBtn;
-	HBox genderHbox;
-	Rectangle rectangle;
+	HBox genderHboxRegis;
+	Scene sceneRegis;
+	Rectangle rectangleRegis;
 	
 	public void init() {
 		
-//      Grid Pane
-        grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(15);
-        grid.setVgap(15);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-        
-//      Label Title
-        titleLbl = new Label("Register");
-        titleLbl.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-        grid.add(titleLbl, 1, 0, 2, 1);
+//		 	Grid Pane
+			gridRegis = new GridPane();
+//			LoginFormPage = new LoginForm();
+			gridRegis.setAlignment(Pos.CENTER);
+			gridRegis.setHgap(15);
+			gridRegis.setVgap(15);
+	        
+	        bPaneRegis = new BorderPane();
+	        
+//	      Label Title
+	        titleLblRegis = new Label("Register");
+	        titleLblRegis.setFont(Font.font("Vernada", FontWeight.BOLD, 20));
+	        gridRegis.setHalignment(titleLblRegis, HPos.CENTER);
+	        gridRegis.add(titleLblRegis, 0, 0);
 
-//      Label Name
-        nameLbl = new Label("Name :");
-        grid.add(nameLbl, 1, 1);
+//	      Label Name
+	        nameLblRegis = new Label("Name :");
+	        gridRegis.add(nameLblRegis, 0, 1);
+	        
+//	      TextField Name
+	        nameTFRegis = new TextField();
+	        nameTFRegis.setPromptText("Name");
+	        nameTFRegis.setMinWidth(250);
+	        gridRegis.add(nameTFRegis, 0, 2);
+	        
+//	      Label Gender
+	        genderLblRegis = new Label("Gender :");
+	        gridRegis.add(genderLblRegis, 0, 3);
+	        
+//	      Radio Button Gender
+	        maleRBRegis = new RadioButton("Male");
+	        femaleRBRegis = new RadioButton("Female");
+	        
+	        genderTGRegis = new ToggleGroup();
+	        
+	        maleRBRegis.setToggleGroup(genderTGRegis);
+	        femaleRBRegis.setToggleGroup(genderTGRegis);
+			
+			genderHboxRegis = new HBox(15);
+			genderHboxRegis.getChildren().add(maleRBRegis);
+			genderHboxRegis.getChildren().add(femaleRBRegis);
+			gridRegis.add(genderHboxRegis, 0, 4);
+	        
+//			Label Email
+			emailLblRegis = new Label("Email :");
+			gridRegis.add(emailLblRegis, 0, 5);
+	        
+//	      TextField Email
+	        emailTFRegis  = new TextField();
+	        emailTFRegis.setPromptText("Email Address");
+	        emailTFRegis.setMinWidth(250);
+	        gridRegis.add(emailTFRegis , 0, 6);
+			
+//			Label Password
+	        passwordLblRegis = new Label("Password :");
+	        gridRegis.add(passwordLblRegis, 0, 7);
+	        
+//	      Password Field Password
+	        passwordPFRegis = new PasswordField();
+	        passwordPFRegis.setPromptText("Password");
+	        passwordPFRegis.setMinWidth(250);
+	        gridRegis.add(passwordPFRegis, 0, 8);
+	        
+//	      Label Confirm Password
+	        confirmPasswordLblRegis = new Label("Confirm Password :");
+	        gridRegis.add(confirmPasswordLblRegis, 0, 9);
+	        
+//	      Password Field Confirm Password
+	        confirmPasswordPFRegis = new PasswordField();
+	        confirmPasswordPFRegis.setPromptText("Confirm Password");
+	        confirmPasswordPFRegis.setMinWidth(250);
+	        gridRegis.add(confirmPasswordPFRegis, 0, 10);
+	        
+//	      Register Button
+	        regisBtn = new Button("Register");
+	        regisBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+	        regisBtn.setTextFill(Color.WHITE);
+	        regisBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
+	        regisBtn.setMinWidth(250);
+	        gridRegis.add(regisBtn, 0, 11);
+	        
+//	      Back to Login Button
+	        backToLoginBtn = new Button("Back to Login");
+	        backToLoginBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+	        backToLoginBtn.setTextFill(Color.WHITE);
+	        backToLoginBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
+	        backToLoginBtn.setMinWidth(250);
+	        gridRegis.add(backToLoginBtn, 0, 12);
+
+	        gridRegis.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+	        
+	        
+	        bPaneRegis.setCenter(gridRegis);
+	        bPaneRegis.setBackground(new Background(new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
+	        bPaneRegis.setMargin(gridRegis, new Insets (80));
+
+	        sceneRegis = new Scene(bPaneRegis, 650, 600);
+			
+	        backToLoginBtn.setOnAction( (event) -> {
+				System.out.println("Balik ke Login");
+				bPaneRegis.setCenter(LoginFormPage);
+//				stage.setTitle("Register");
+			});           
         
-//      TextField Name
-        nameTF = new TextField();
-        nameTF.setPromptText("Name");
-        nameTF.setMinWidth(250);
-        grid.add(nameTF, 1, 2);
-        
-//      Label Gender
-        Label gender = new Label("Gender :");
-        grid.add(gender, 1, 3);
-        
-//      Radio Button Gender
-        maleRB = new RadioButton("Male");
-        femaleRB = new RadioButton("Female");
-        
-        genderTG = new ToggleGroup();
-        
-		maleRB.setToggleGroup(genderTG);
-		femaleRB.setToggleGroup(genderTG);
-		
-		genderHbox = new HBox(15);
-		genderHbox.getChildren().add(maleRB);
-		genderHbox.getChildren().add(femaleRB);
-        grid.add(genderHbox, 1, 4);
-        
-//		Label Email
-		emailLbl = new Label("Email :");
-        grid.add(emailLbl, 1, 5);
-        
-//      TextField Email
-        emailTF  = new TextField();
-        emailTF.setPromptText("Email Address");
-        emailTF.setMinWidth(250);
-        grid.add(emailTF , 1, 6);
-		
-//		Label Password
-        passwordLbl = new Label("Password :");
-        grid.add(passwordLbl, 1, 7);
-        
-//      Password Field Password
-        passwordPF = new PasswordField();
-        passwordPF.setPromptText("Password");
-        passwordPF.setMinWidth(250);
-        grid.add(passwordPF, 1, 8);
-        
-//      Label Confirm Password
-        confirmPasswordLbl = new Label("Confirm Password :");
-        grid.add(confirmPasswordLbl, 1, 9);
-        
-//      Password Field Confirm Password
-        confirmPasswordPF = new PasswordField();
-        confirmPasswordPF.setPromptText("Confirm Password");
-        confirmPasswordPF.setMinWidth(250);
-        grid.add(confirmPasswordPF, 1, 10);
-        
-//      Register Button
-        regisBtn = new Button("Register");
-        regisBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        regisBtn.setTextFill(Color.WHITE);
-        regisBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
-        regisBtn.setMinWidth(250);
-        grid.add(regisBtn, 1, 11);
-        
-//      Back to Login Button
-        backToLoginBtn = new Button("Back to Login");
-        backToLoginBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        backToLoginBtn.setTextFill(Color.WHITE);
-        backToLoginBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
-        backToLoginBtn.setMinWidth(250);
-        grid.add(backToLoginBtn, 1, 12);
-        
-		
-		grid.setStyle("-fx-background-color: lightcyan;");
-		
-//      Rectangle Belakang
-        rectangle = new Rectangle(400, 400);
-        rectangle.setFill(Color.WHITE);
-        
-//      StackPane (Buat numpuk rectangle sama gridpane)
-        stackPane = new StackPane();
-        stackPane.getChildren().add(rectangle);
-        stackPane.getChildren().add(grid);
-		
-        scene = new Scene(stackPane, 600, 650);        
-        
+//	        Validation
+	        int atCount = emailTFRegis.getText().length() - emailTFRegis.getText().replace("@", "").length();
+//	        int dotCount = emailTFRegis.getText().substring(emailTFRegis.getText().indexOf("@")).length() - emailTFRegis.getText().substring(emailTFRegis.getText().indexOf("@")).replace(".", "").length();
+	        int dotCount = 1;
+	        
+//	        Validasi Name
+	        regisBtn.setOnAction( (event) -> {
+	        	if (nameTFRegis.getText().length() < 5 || nameTFRegis.getText().length() > 40) {
+	  	    	  Alert alert = new Alert(Alert.AlertType.ERROR, "Name must be between 5 and 40 characters!");
+	  	    	  alert.showAndWait();
+	  	    	  return;
+	  	    	}
+	        
+//	        	Validasi Gender
+	        RadioButton pick = (RadioButton) genderTGRegis.getSelectedToggle();
+		    	if (pick == null) {
+	
+		    		Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a gender!");
+		    		alert.showAndWait();
+		    	}
+		    	
+//		    	Valisadi Email
+		    	String pattern = "^[a-zA-Z0-9_+&*-]+(?:\\." +
+		    	                 "[a-zA-Z0-9_+&*-]+)*@" +
+		    	                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
+		    	                 "A-Z]{2,7}$";
+		    	
+//		    	if (!emailTFRegis.getText().matches(pattern)) {
+//		    	  Alert alert = new Alert(Alert.AlertType.ERROR, "Please enter a valid email address!");
+//		    	  alert.showAndWait();
+//		    	  return;
+//		    	  
+//		    	}else if (emailTFRegis.getText().contains("@.") || emailTFRegis.getText().contains("..")) {
+//		    		Alert alert = new Alert(Alert.AlertType.ERROR, "Character ‘@’ must not be next to ‘.’!");
+//		    		  alert.showAndWait();
+//		    		  return;
+//				}else if (emailTFRegis.getText().contains("@.") || emailTFRegis.getText().contains("..")) {
+//					Alert alert = new Alert(Alert.AlertType.ERROR, "Character ‘@’ must not be next to ‘.’!");
+//		    		  alert.showAndWait();
+//		    		  return;
+//				}else if (emailTFRegis.getText().startsWith("@") || emailTFRegis.getText().startsWith(".") || emailTFRegis.getText().endsWith("@") || emailTFRegis.getText().endsWith(".")) {
+////			    		Must not starts and ends with ‘@’ nor ‘.’.
+//					Alert alert = new Alert(Alert.AlertType.ERROR, "Email must not start or end with '@' or '.'!");
+//			    	  alert.showAndWait();
+//			    	  return;
+//				}else if (atCount != 1) {
+////	    				Must contain exactly one ‘@’.
+//					 Alert alert = new Alert(Alert.AlertType.ERROR, "Email must contain exactly one '@' symbol!");
+//			    	  alert.showAndWait();
+//			    	  return;
+//				}else if (dotCount != 1) {
+////	    				Must contain exactly one ‘.’ after ‘@’ for separating [provider] and “com”.
+//					Alert alert = new Alert(Alert.AlertType.ERROR, "Email must contain exactly one '.' symbol after the '@' symbol!");
+//			    	  alert.showAndWait();
+//			    	  return;
+//				}else if (!emailTFRegis.getText().endsWith(".com")) {
+////	    				Must ends with ‘.com’
+//					Alert alert = new Alert(Alert.AlertType.ERROR, "Email must end with '.com'!");
+//			    	  alert.showAndWait();
+//			    	  return;
+//				}
+		    	
+		    	
+//		    	Validasi Password
+		    	if (passwordPFRegis.getText().length() < 6 || passwordPFRegis.getText().length() > 20) {
+		    	  Alert alert = new Alert(Alert.AlertType.ERROR, "Password must be between 6 and 20 characters!");
+		    	  alert.showAndWait();
+		    	  return;
+		    	}
+		    	
+//		    	Validasi Confirm Password
+		    	if (!confirmPasswordPFRegis.getText().equals(passwordPFRegis.getText())) {
+			    	  Alert alert = new Alert(Alert.AlertType.ERROR, "Password and confirm password do not match!");
+			    	  alert.showAndWait();
+			    	  return;
+			    	}
+		    	
+		    	
+		    	
+	        });
+	        
 	}
+	
 
 	
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 
     @Override
     public void start(Stage stage) {
     	init();
         stage.setTitle("Register Form");
-        stage.setScene(scene);
+        stage.setScene(sceneRegis);
         stage.show();
         
-
-
-        // mid rectangle
-//        Rectangle rectangle = new Rectangle(400,600);
-//        rectangle.setFill(Color.WHITE);
-//        
-////        rectangle.setArcWidth(1);
-//        grid.getChildren().add(rectangle);
-        
-        
-        
-        
-//        final Text actiontarget = new Text();
-//        grid.add(actiontarget, 1, 6);
-//        
-        
-        // masuk registration page
-//        btn1.setOnAction(event -> {
-//        	try {
-//        	    FXMLLoader loader = new FXMLLoader(getClass().getResource("registration.fxml"));
-//        	    Parent root = loader.load();
-//
-//        	    Scene scene = new Scene(root);
-//
-//        	    Stage stage = (Stage) btn1.getScene().getWindow();
-//        	    stage.setScene(scene);
-//        	} catch (IOException e) {
-//        	    // handle the exception
-//        	}
-//        	
-//        });
-        
-
-
-        // set the action for the back to login button
-//        backToLoginBTN.setOnAction(event -> {
-//            // navigate back to the login page
-//        });
-        
-        
     }
+    
 }
