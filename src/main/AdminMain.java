@@ -7,6 +7,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.WindowIcon;
 
 public class AdminMain extends Application{
 
@@ -17,6 +18,7 @@ public class AdminMain extends Application{
 	MenuBar menuBar;
 	Menu userMenu, managementMenu;
 	MenuItem logOutMI, manageProductMI, manageBrandMI; 
+	
 	
 	public void initialize() {
 		bPane = new BorderPane();
