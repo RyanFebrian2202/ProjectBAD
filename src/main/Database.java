@@ -1,52 +1,103 @@
 package main;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class Database {
+/**
+* <strong>
+* --------------------------------------------------------------- <br>
+* | ISYS6197 - BUSINESS APPLICATION DEVELOPMENT | <br>
+* --------------------------------------------------------------- <br>
+* </strong>
+* <br>
+* Connect.java | This class is used for connection to MySQL database
+* <br>
+* Copyright 2019 - Bina Nusantara University
+* <br>
+* Software Laboratory Center | Laboratory Center Alam Sutera
+* <br>
+* Kevin Surya Wahyudi (SW16-2), All rights reserved.
+* <br>
+*/
+public final class Database {
+	
+	private final String USERNAME = "root"; // change with your MySQL username, the default username is 'root'
+	private final String PASSWORD = ""; // change with your MySQL password, the default password is empty
+	private final String DATABASE = "bad_project"; // change with the database name that you use
+	private final String HOST = "localhost:3306"; // change with your MySQL host, the default port is 3306
+	private final String CONECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
+	
+	private Connection con;
+	private Statement st;
+	private static Database connect;
+	
+	/**
+	* Constructor for Connect class
+	* <br>
+	* This class is used singleton design pattern, so this class only have one instance
+	*/
+    private Database() {
+    	try {  
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);  
+            st = con.createStatement(); 
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	System.out.println("Failed to connect the database, the system is terminated!");
+        	System.exit(0);
+        }  
+    }
+    
+	/**
+	* This method is used for get instance from Connect class
+	* @return Connect This returns instance from Connect class
+	*/
+    public static synchronized Database getConnection() {
+		/**
+		* If the connect is null then:
+		*   - Create the instance from Connect class
+		*   - Otherwise, just assign the previous instance of this class
+		*/
+		return connect = (connect == null) ? new Database() : connect;
+    }
 
-	public static void main(String[] args) {
-		try {
-			//Load Driver
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			//connection
-			String username = "root"; //standard mysql
-			String password = null;
-			String server = "localhost:3306";
-			String databaseName = "bad_project";
-			String connectionString = String.format("jdbc:mysql://%s/%s", server,databaseName);
-			
-			Connection con = DriverManager.getConnection(connectionString, username, password);
-			
-			//execute query --> hanya  untuk select data kl mau insert dkk pake executeUpdate
-			Statement st = con.createStatement();
-			
-			//insert data
-			//st.executeUpdate("INSERT INTO Mahasiswa VALUES('2540118753','Ezekhiel Ethan','3')");
-			// ini gbs disimpan tp yg bs disimpan itu adalah berapa nilai yg berubah
-			// int totalAffectedRow = st.executeUpdate("INSERT INTO Mahasiswa VALUES('2540118750','Ezekhiel Ethan','3')");
-			// gbs pake resultset krn ini kan gk ngasilin table cuma update table doang. gk ada hasil.
-			
-			//get data
-			ResultSet rs = st.executeQuery("SELECT * FROM Mahasiswa");
-			
-			//get value from result set
-			while (rs.next()) {
-//				String NIM = rs.getString("NIM");
-//				String nama = rs.getString("Nama");
-//				int semester = rs.getInt("Semester");
-//				
-//				System.out.println(NIM + " " + nama + " " + semester);
-			};
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+    /**
+	* This method is used for SELECT SQL statements.
+	* @param String This is the query statement
+	* @return ResultSet This returns result data from the database
+	*/
+    public ResultSet executeQuery(String query) {
+        ResultSet rs = null;
+    	try {
+            rs = st.executeQuery(query);
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return rs;
+    }
+
+	/**
+	* This method is used for INSERT, UPDATE, or DELETE SQL statements.
+	* @param String This is the query statement
+	*/
+    public void executeUpdate(String query) {
+    	try {
+			st.executeUpdate(query);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
+    }
+    
+	/**
+	* This method is used for SELECT, INSERT, UPDATE, or DELETE SQL statements using prepare statement.
+	* @param String This is the query statement
+	*/
+    public PreparedStatement prepareStatement(String query) {
+    	PreparedStatement ps = null;
+    	try {
+			ps = con.prepareStatement(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	return ps;
+    }
 }

@@ -103,8 +103,8 @@ public class ManageProductForm extends Application {
 		tableView.getColumns().add(column4);
 		tableView.getColumns().add(column5);
 
-		tableView.getItems().add(new Watch("1", "Submariner 300 Watch", "Rolex", 10500, 4));
-		tableView.getItems().add(new Watch("2", "Seamaster Planet Ocean Watch", "Omega", 6900, 5));
+		tableView.getItems().add(new Watch(1, "Submariner 300 Watch", "Rolex", 10500, 4));
+		tableView.getItems().add(new Watch(2, "Seamaster Planet Ocean Watch", "Omega", 6900, 5));
 
 		VBox vbox = new VBox(tableView);
 		
@@ -146,7 +146,7 @@ public class ManageProductForm extends Application {
 		arrangeComponent();
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Manage Product");
-		//primaryStage.show();
+		primaryStage.show();
 	}
 	
 	

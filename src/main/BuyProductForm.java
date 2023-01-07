@@ -1,18 +1,28 @@
 package main;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+//import jfxtras.labs.scene.control.window.CloseIcon;
 import model.Cart;
 import model.Watch;
 
@@ -21,16 +31,19 @@ public class BuyProductForm extends Application{
 	Scene scene;
 	BorderPane bPane1, bPanequan;
 	GridPane gPane;
-	FlowPane bottomBtn;
+	FlowPane bottomBtn, QuanPane;
+//	jfxtras.labs.scene.control.window.Window buyproductWindow;
 
 	
 	Label selectWatchLbl, quantityLbl, watchNameLbl;
 	Button addWatchToCartBtn, clearCartBtn, checkOutBtn;
 	Spinner<Integer> quantitySp;
 	
-	TableView<Watch> watchTable; 
+	TableView<Watch> watchTable;
 	TableView<Cart> cartTable;
-
+	Vector<Watch> watchlist;
+	Vector<Cart> cartlist;
+	Database db = Database.getConnection();
 	
 	
 	public void setTableWatch() {
@@ -47,10 +60,22 @@ public class BuyProductForm extends Application{
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		col5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
+		watchTable.setMaxSize(650, 250);
+		
+//		set minimal ukuran kolom
+		col1.setMinWidth(80);
+		col2.setMinWidth(200);
+		col3.setMinWidth(123);
+		col4.setMinWidth(122);
+		col5.setMinWidth(122);
+		
 		//add ke table pakai colom
 		watchTable.getColumns().addAll(col1, col2, col3, col4, col5);
 		
 		bPane1.setTop(watchTable);
+		bPane1.setAlignment(watchTable, Pos.TOP_CENTER);
+		
+		col1.getCellData(0);
 	}
 	
 	public void setTableCart() {
@@ -64,38 +89,77 @@ public class BuyProductForm extends Application{
 		col2.setCellValueFactory(new PropertyValueFactory<Cart, String>("Watch ID"));
 		col3.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
 		
+		cartTable.setMaxSize(650, 250);
+		col1.setMinWidth(650/3);
+		col2.setMinWidth(650/3);
+		col3.setMinWidth(650/3);
+		
 		//add ke table pakai colom
 		cartTable.getColumns().addAll(col1,col2,col3);
 	}
 	
+	public void getData() {
+		String query = "SELECT * FROM `watch`";
+		ResultSet rs = db.executeQuery(query);
+		
+		try {
+			while(rs.next()) {
+				int watchid = rs.getInt("WatchID");
+				String watchname = rs.getString("WatchName");
+				String watchbrand = rs.getString("WatchID");
+				int watchprice = rs.getInt("WatchPrice");
+				int watchstock = rs.getInt("WatchStock");
+				
+				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
+				watchlist.add(watch);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void init() {
+		
+		
 		bPane1 = new BorderPane();
 		bPanequan = new BorderPane();
+		
 		gPane = new GridPane();
 		bottomBtn = new FlowPane();
+		QuanPane = new FlowPane();
+		
+//		buyproductWindow = new jfxtras.labs.scene.control.window.Window("Buy Product");
+		
+		setTableWatch();
+		setTableCart();
+		getData();
+		
 		
 //		watch namenya nanti ganti ke get text
 		watchNameLbl = new Label("rolex");
+		Label none = new Label("none");
 		
-		selectWatchLbl = new Label("Selected Watch: " + watchNameLbl.getText());
-		bPanequan.setTop(selectWatchLbl);
-		selectWatchLbl.setAlignment(Pos.TOP_LEFT);
+		selectWatchLbl = new Label("Selected Watch: " + none.getText());
+//		bPanequan.setTop(selectWatchLbl);
 		
 		quantityLbl = new Label("Quantity: ");
-		bPanequan.setCenter(quantityLbl);
-		gPane.add(quantityLbl, 0, 0);
+//		bPanequan.setCenter(quantityLbl);
+		QuanPane.getChildren().add(quantityLbl);
+//		gPane.add(quantityLbl, 0, 0);
 		
 		quantitySp = new Spinner<>(0, 100, 0, 1);
-		bPanequan.setCenter(quantitySp);
-		gPane.add(quantitySp, 1, 0);
+//		bPanequan.setCenter(quantitySp);
+		QuanPane.getChildren().add(quantitySp);
+//		gPane.add(quantitySp, 1, 0);
 		
 		addWatchToCartBtn = new Button("Add Watch To Cart");
-		bPanequan.setCenter(addWatchToCartBtn);
-		gPane.add(addWatchToCartBtn, 2, 0);
+//		bPanequan.setCenter(addWatchToCartBtn);
+		QuanPane.getChildren().add(addWatchToCartBtn);
+//		gPane.add(addWatchToCartBtn, 2, 0);
 		
-		gPane.setHgap(10);
+		QuanPane.setHgap(10);
 		gPane.setAlignment(Pos.CENTER);
-		bPanequan.setCenter(gPane);
 		
 		clearCartBtn = new Button("Clear Cart");
 		bottomBtn.getChildren().add(clearCartBtn);
@@ -104,16 +168,52 @@ public class BuyProductForm extends Application{
 		bottomBtn.getChildren().add(checkOutBtn);
 		
 		bottomBtn.setHgap(15);
+		bottomBtn.setPadding(new Insets(8, 0, 0, 0));
 		
+		gPane.add(selectWatchLbl, 0, 1);
+		
+		gPane.add(QuanPane, 1, 2);
+		
+		bPanequan.setCenter(gPane);
+		
+		bPanequan.setBottom(cartTable);
+		bPanequan.setAlignment(cartTable, Pos.CENTER);
 		
 		bPane1.setCenter(bPanequan);
 
 		bPane1.setBottom(bottomBtn);
+		
+		bPane1.setPadding(new Insets(8, 8, 8, 8));
+
+		
 		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
+
+//		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
+//		buyproductWindow.getContentPane().getChildren().add(bPane1);
+
 		
+		scene = new Scene(bPane1, 750, 700);
 		
-		
-		scene = new Scene(bPane1, 600, 600);
+	}
+	
+	public void AlertInformation(String content) {
+		Alert info = new Alert(AlertType.INFORMATION);
+		info.setHeaderText("Message");
+		info.setContentText("Data has been successfully added");
+		info.show();
+	}
+	
+	public void AlertConformation(String content) {
+		Alert confor = new Alert(AlertType.CONFIRMATION);
+		confor.setContentText("Data has been successfully added");
+		confor.show();
+	}
+	
+	public void AlertError(String content) {
+		Alert error = new Alert(AlertType.ERROR);
+		error.setHeaderText("Error");
+		error.setContentText(content);
+		error.show();
 	}
 	
 	public static void main(String[] args) {
