@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -116,12 +117,15 @@ public class BuyProductForm extends Application{
 				int watchstock = rs.getInt("WatchStock");
 				
 				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
-				ResultSet rsb = db.executeQuery(querybrand);
-				String watchbrand = rsb.getString("BrandName");
+				ResultSet rsb = db.executeQuery2(querybrand);
+				String watchbrand = "";
+				if(rsb.next()) {
+					watchbrand = rsb.getString("brandName");					
+				}
+				System.out.println(watchbrand);
 				
 				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
 				watchlist.add(watch);
-
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

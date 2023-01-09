@@ -27,7 +27,8 @@ public final class Database {
 	private final String CONECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
 	
 	private Connection con;
-	private Statement st;
+	private Statement st1;
+	private Statement st2;
 	private static Database connect;
 	
 	/**
@@ -39,7 +40,8 @@ public final class Database {
     	try {  
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);  
-            st = con.createStatement(); 
+            st1 = con.createStatement(); 
+            st2 = con.createStatement();
         } catch(Exception e) {
         	e.printStackTrace();
         	System.out.println("Failed to connect the database, the system is terminated!");
@@ -68,7 +70,17 @@ public final class Database {
     public ResultSet executeQuery(String query) {
         ResultSet rs = null;
     	try {
-            rs = st.executeQuery(query);
+            rs = st1.executeQuery(query);
+        } catch(Exception e) {
+        	e.printStackTrace();
+        }
+        return rs;
+    }
+    
+    public ResultSet executeQuery2(String query) {
+        ResultSet rs = null;
+    	try {
+            rs = st2.executeQuery(query);
         } catch(Exception e) {
         	e.printStackTrace();
         }
@@ -81,7 +93,7 @@ public final class Database {
 	*/
     public void executeUpdate(String query) {
     	try {
-			st.executeUpdate(query);
+			st1.executeUpdate(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
