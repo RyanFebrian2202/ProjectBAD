@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Vector;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,8 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-//import jfxtras.labs.scene.control.window.CloseIcon;
 import model.Cart;
+//import jfxtras.labs.scene.control.window.CloseIcon;
 import model.Watch;
 
 public class BuyProductForm extends Application{
@@ -48,15 +50,16 @@ public class BuyProductForm extends Application{
 	
 	public void setTableWatch() {
 		watchTable = new TableView<>();
-		TableColumn<Watch, String> col1 = new TableColumn<Watch, String>("Watch ID");
+		watchlist = new Vector<>();
+		TableColumn<Watch, Integer> col1 = new TableColumn<Watch, Integer>("Watch ID");
 		TableColumn<Watch, String> col2 = new TableColumn<Watch, String>("Watch Name");
-		TableColumn<Watch, String> col3 = new TableColumn<Watch, String>("Watch Brand");
+		TableColumn<Watch, Integer> col3 = new TableColumn<Watch, Integer>("Watch Brand");
 		TableColumn<Watch, Integer> col4 = new TableColumn<Watch, Integer>("Watch Price");
 		TableColumn<Watch, Integer> col5 = new TableColumn<Watch, Integer>("Watch Stock");
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchID"));
+		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchID"));
 		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
-		col3.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchBrand"));
+		col3.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchBrand"));
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		col5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
@@ -80,6 +83,7 @@ public class BuyProductForm extends Application{
 	
 	public void setTableCart() {
 		cartTable = new TableView<>();
+		cartlist = new Vector<>();
 		TableColumn<Cart, String> col1 = new TableColumn<Cart, String>("User ID");
 		TableColumn<Cart, String> col2 = new TableColumn<Cart, String>("Watch ID");
 		TableColumn<Cart, Integer>col3 = new TableColumn<Cart, Integer>("Quantity");
@@ -100,23 +104,37 @@ public class BuyProductForm extends Application{
 	
 	public void getData() {
 		String query = "SELECT * FROM `watch`";
+//		String querybrand = "SELECT * FROM `brand`";
 		ResultSet rs = db.executeQuery(query);
+//		ResultSet rsb = db.executeQuery(querybrand);
+		
 		
 		try {
 			while(rs.next()) {
 				int watchid = rs.getInt("WatchID");
 				String watchname = rs.getString("WatchName");
-				String watchbrand = rs.getString("WatchID");
+				int watchbrand = rs.getInt("WatchID");
 				int watchprice = rs.getInt("WatchPrice");
 				int watchstock = rs.getInt("WatchStock");
 				
 				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
 				watchlist.add(watch);
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	
+	public void refreshTable() {
+		watchlist.clear();
+		getData();
+		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchlist);
+		watchTable.setItems(watchObs);
+//		System.out.println(watchlist.get(1).getWatchID());
 	}
 	
 	public void init() {
@@ -133,7 +151,7 @@ public class BuyProductForm extends Application{
 		
 		setTableWatch();
 		setTableCart();
-		getData();
+		
 		
 		
 //		watch namenya nanti ganti ke get text
@@ -224,7 +242,7 @@ public class BuyProductForm extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		init();
-		setTableWatch();
+		refreshTable();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
