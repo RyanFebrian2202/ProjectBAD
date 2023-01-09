@@ -2,9 +2,9 @@ package model;
 
 public class Watch {
 	protected String WatchName, WatchBrand;
-	protected Integer WatchID, WatchPrice, WatchStock;
+	protected int WatchID, WatchPrice, WatchStock;
 	
-	public Watch(Integer watchID, String watchName, String watchBrand, Integer watchPrice, Integer watchStock) {
+	public Watch(int watchID, String watchName, String watchBrand, int watchPrice, int watchStock) {
 		super();
 		WatchID = watchID;
 		WatchName = watchName;
@@ -13,10 +13,10 @@ public class Watch {
 		WatchStock = watchStock;
 	}
 	
-	public Integer getWatchID() {
+	public int getWatchID() {
 		return WatchID;
 	}
-	public void setWatchID(Integer watchID) {
+	public void setWatchID(int watchID) {
 		WatchID = watchID;
 	}
 	public String getWatchName() {
@@ -31,16 +31,16 @@ public class Watch {
 	public void setWatchBrand(String watchBrand) {
 		WatchBrand = watchBrand;
 	}
-	public Integer getWatchPrice() {
+	public int getWatchPrice() {
 		return WatchPrice;
 	}
-	public void setWatchPrice(Integer watchPrice) {
+	public void setWatchPrice(int watchPrice) {
 		WatchPrice = watchPrice;
 	}
-	public Integer getWatchStock() {
+	public int getWatchStock() {
 		return WatchStock;
 	}
-	public void setWatchStock(Integer watchStock) {
+	public void setWatchStock(int watchStock) {
 		WatchStock = watchStock;
 	}
 	

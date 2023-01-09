@@ -2,28 +2,29 @@ package model;
 
 public class Brand {
 
-	protected String brandID, brandName;
+	protected String BrandName;
+	protected int BrandID;
 
-	public Brand(String brandID, String brandName) {
+	public Brand(int brandID, String brandName) {
 		super();
-		this.brandID = brandID;
-		this.brandName = brandName;
+		this.BrandID = brandID;
+		this.BrandName = brandName;
 	}
 
-	public String getBrandID() {
-		return brandID;
+	public int getBrandID() {
+		return BrandID;
 	}
 
-	public void setBrandID(String brandID) {
-		this.brandID = brandID;
+	public void setBrandID(int brandID) {
+		this.BrandID = brandID;
 	}
 
 	public String getBrandName() {
-		return brandName;
+		return BrandName;
 	}
 
 	public void setBrandName(String brandName) {
-		this.brandName = brandName;
+		this.BrandName = brandName;
 	}
 	
 	

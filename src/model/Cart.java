@@ -2,38 +2,38 @@ package model;
 
 public class Cart {
 
-	protected String UserID, WatchID;
-	protected Integer Quantity;
+	protected int UserID, WatchID, Quantity;
 
-	public Cart(String userID, String watchID, Integer quantity) {
+	public Cart(int userID, int watchID, int quantity) {
 		super();
 		UserID = userID;
 		WatchID = watchID;
 		Quantity = quantity;
 	}
 
-	public String getUserID() {
+	public int getUserID() {
 		return UserID;
 	}
 
-	public void setUserID(String userID) {
+	public void setUserID(int userID) {
 		UserID = userID;
 	}
 
-	public String getWatchID() {
+	public int getWatchID() {
 		return WatchID;
 	}
 
-	public void setWatchID(String watchID) {
+	public void setWatchID(int watchID) {
 		WatchID = watchID;
 	}
 
-	public Integer getQuantity() {
+	public int getQuantity() {
 		return Quantity;
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(int quantity) {
 		Quantity = quantity;
 	}
-
+	
+	
 }

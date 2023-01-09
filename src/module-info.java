@@ -1,5 +1,6 @@
 module BADProject {
 	opens main;
+	opens model;
 	requires javafx.base;
 	requires javafx.controls;
 	requires javafx.fxml;

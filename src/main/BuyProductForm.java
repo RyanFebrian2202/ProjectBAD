@@ -3,9 +3,12 @@ package main;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Vector;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -48,6 +51,7 @@ public class BuyProductForm extends Application{
 	Vector<Cart> cartlist;
 	Database db = Database.getConnection();
 	
+	int watchId;
 	
 	public void setTableWatch() {
 		watchTable = new TableView<>();
@@ -85,13 +89,13 @@ public class BuyProductForm extends Application{
 	public void setTableCart() {
 		cartTable = new TableView<>();
 		cartlist = new Vector<>();
-		TableColumn<Cart, String> col1 = new TableColumn<Cart, String>("User ID");
-		TableColumn<Cart, String> col2 = new TableColumn<Cart, String>("Watch ID");
+		TableColumn<Cart, Integer> col1 = new TableColumn<Cart, Integer>("User ID");
+		TableColumn<Cart, Integer> col2 = new TableColumn<Cart, Integer>("Watch ID");
 		TableColumn<Cart, Integer>col3 = new TableColumn<Cart, Integer>("Quantity");
 
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Cart, String>("User ID"));
-		col2.setCellValueFactory(new PropertyValueFactory<Cart, String>("Watch ID"));
+		col1.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("UserID"));
+		col2.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("WatchID"));
 		col3.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
 		
 		cartTable.setMaxSize(650, 250);
@@ -118,6 +122,10 @@ public class BuyProductForm extends Application{
 				
 				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
 				ResultSet rsb = db.executeQuery2(querybrand);
+//				PreparedStatement ps = db.prepareStatement(querybrand);
+//				ResultSet rs2 = ps.executeQuery();
+//				String test = rs2.getString("brandName");
+//				System.out.println(test);
 				String watchbrand = "";
 				if(rsb.next()) {
 					watchbrand = rsb.getString("brandName");					
@@ -126,21 +134,62 @@ public class BuyProductForm extends Application{
 				
 				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
 				watchlist.add(watch);
+				rsb.close();
 			}
+			rs.close();
+			
+			rs = db.executeQuery("SELECT * FROM `cart`");
+			while(rs.next()) {
+				int watchid = rs.getInt("WatchID");
+				int customerid = rs.getInt("UserID");
+				int quantity = rs.getInt("Quantity");
+				
+				Cart cart = new Cart(customerid,watchid,quantity);
+				cartlist.add(cart);
+			}
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	
+	public void selectTable() {
+		watchTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Watch>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Watch> observable, Watch oldValue, Watch newValue) {
+				// TODO Auto-generated method stub
+				if (newValue != null) {
+					selectWatchLbl.setText("Selected Watch: " + newValue.getWatchName());
+					
+					watchId = newValue.getWatchID();
+				}
+			}
+		});
+	}
 	
 	public void refreshTable() {
 		watchlist.clear();
+		cartlist.clear();
 		getData();
 		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchlist);
 		watchTable.setItems(watchObs);
+		ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
+		cartTable.setItems(cartObs);
 //		System.out.println(watchlist.get(1).getWatchID());
+	}
+	
+	public void addWatch() {
+		addWatchToCartBtn.setOnMouseClicked((event)->{
+			Cart cart = new Cart(1,watchId,quantitySp.getValue());
+			cartlist.add(cart);
+			ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
+			cartTable.setItems(cartObs);
+			
+//			String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",1,watchId,quantitySp.getValue());
+//			db.executeUpdate(query);
+		});
 	}
 	
 	public void init() {
@@ -160,11 +209,8 @@ public class BuyProductForm extends Application{
 		
 		
 		
-//		watch namenya nanti ganti ke get text
-		watchNameLbl = new Label("rolex");
-		Label none = new Label("none");
-		
-		selectWatchLbl = new Label("Selected Watch: " + none.getText());
+//		watch namenya nanti ganti ke get text		
+		selectWatchLbl = new Label("Selected Watch: None");
 //		bPanequan.setTop(selectWatchLbl);
 		
 		quantityLbl = new Label("Quantity: ");
@@ -214,7 +260,6 @@ public class BuyProductForm extends Application{
 
 //		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
 //		buyproductWindow.getContentPane().getChildren().add(bPane1);
-
 		
 		scene = new Scene(bPane1, 750, 700);
 		
@@ -249,6 +294,8 @@ public class BuyProductForm extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		init();
 		refreshTable();
+		selectTable();
+		addWatch();
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		

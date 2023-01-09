@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.TransactionHistory;
+import model.HeaderTransaction;
 import model.Watch;
 
 public class ViewTransactionHistoryForm extends Application {
@@ -27,19 +27,19 @@ public class ViewTransactionHistoryForm extends Application {
 //		Label selectedTransactionLbl = new Label("Selected Transaction: " + );
 
 		// Codingan untuk Table View Transaction Header
-		TableView tableView1 = new TableView<TransactionHistory>();
+		TableView tableView1 = new TableView<HeaderTransaction>();
 		
-		TableColumn<TransactionHistory, String> column1 = new TableColumn<>("Transaction ID");
+		TableColumn<HeaderTransaction, String> column1 = new TableColumn<>("Transaction ID");
 		column1.setMinWidth(333);
-		column1.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("transactionId"));
+		column1.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, String>("transactionID"));
 
-		TableColumn<TransactionHistory, String> column2 = new TableColumn<>("User ID");
+		TableColumn<HeaderTransaction, String> column2 = new TableColumn<>("User ID");
 		column2.setMinWidth(333);
-		column2.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("userId"));
+		column2.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, String>("userID"));
 
-		TableColumn<TransactionHistory, String> column3 = new TableColumn<>("Transaction Date");
+		TableColumn<HeaderTransaction, String> column3 = new TableColumn<>("Transaction Date");
 		column3.setMinWidth(333);
-		column3.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("transactionDate"));
+		column3.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, String>("transactionDate"));
 
 		tableView1.getColumns().add(column1);
 		tableView1.getColumns().add(column2);
@@ -48,12 +48,12 @@ public class ViewTransactionHistoryForm extends Application {
 		// Biar column nya ga bisa di resize
 		tableView1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-		tableView1.getItems().add(new TransactionHistory("1", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("2", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("3", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("4", "2", "2022-05-28"));
-		tableView1.getItems().add(new TransactionHistory("5", "2", "2022-05-28"));
-		tableView1.getItems().add(new TransactionHistory("6", "2", "2022-05-28"));
+		tableView1.getItems().add(new HeaderTransaction("1", "2", "2022-05-25"));
+		tableView1.getItems().add(new HeaderTransaction("2", "2", "2022-05-25"));
+		tableView1.getItems().add(new HeaderTransaction("3", "2", "2022-05-25"));
+		tableView1.getItems().add(new HeaderTransaction("4", "2", "2022-05-28"));
+		tableView1.getItems().add(new HeaderTransaction("5", "2", "2022-05-28"));
+		tableView1.getItems().add(new HeaderTransaction("6", "2", "2022-05-28"));
 
 		VBox vbox = new VBox(tableView1);
 		
@@ -70,9 +70,9 @@ public class ViewTransactionHistoryForm extends Application {
 		int subTotal = 0;
 		TableView tableView2 = new TableView();
 		
-		TableColumn<TransactionHistory, String> column4 = new TableColumn<>("Transaction ID");
+		TableColumn<HeaderTransaction, String> column4 = new TableColumn<>("Transaction ID");
 		column4.setMinWidth(142);
-		column4.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("transactionId"));
+		column4.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, String>("transactionId"));
 		
 		TableColumn<Watch, String> column5 = new TableColumn<>("Watch ID");
 		column5.setMinWidth(142);
