@@ -104,18 +104,20 @@ public class BuyProductForm extends Application{
 	
 	public void getData() {
 		String query = "SELECT * FROM `watch`";
-//		String querybrand = "SELECT * FROM `brand`";
 		ResultSet rs = db.executeQuery(query);
-//		ResultSet rsb = db.executeQuery(querybrand);
 		
 		
 		try {
 			while(rs.next()) {
 				int watchid = rs.getInt("WatchID");
 				String watchname = rs.getString("WatchName");
-				int watchbrand = rs.getInt("WatchID");
+				int watchbrandID = rs.getInt("BrandID");
 				int watchprice = rs.getInt("WatchPrice");
 				int watchstock = rs.getInt("WatchStock");
+				
+				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
+				ResultSet rsb = db.executeQuery(querybrand);
+				String watchbrand = rsb.getString("BrandName");
 				
 				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
 				watchlist.add(watch);
