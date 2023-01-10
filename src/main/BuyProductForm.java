@@ -29,8 +29,8 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Cart;
-//import jfxtras.labs.scene.control.window.CloseIcon;
 import model.Watch;
+//import jfxtras.labs.scene.control.window.CloseIcon;
 
 public class BuyProductForm extends Application{
 	
@@ -182,10 +182,13 @@ public class BuyProductForm extends Application{
 	
 	public void addWatch() {
 		addWatchToCartBtn.setOnMouseClicked((event)->{
-			Cart cart = new Cart(1,watchId,quantitySp.getValue());
-			cartlist.add(cart);
-			ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
-			cartTable.setItems(cartObs);
+			if (!selectWatchLbl.equals("none") && quantitySp.getValue() > 0) {
+				
+				Cart cart = new Cart(1,watchId,quantitySp.getValue());
+				cartlist.add(cart);
+				ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
+				cartTable.setItems(cartObs);
+			}
 			
 //			String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",1,watchId,quantitySp.getValue());
 //			db.executeUpdate(query);
@@ -268,21 +271,21 @@ public class BuyProductForm extends Application{
 	public void AlertInformation(String content) {
 		Alert info = new Alert(AlertType.INFORMATION);
 		info.setHeaderText("Message");
-		info.setContentText("Data has been successfully added");
-		info.show();
+		info.setContentText(content);
+		info.showAndWait();
 	}
 	
 	public void AlertConformation(String content) {
 		Alert confor = new Alert(AlertType.CONFIRMATION);
-		confor.setContentText("Data has been successfully added");
-		confor.show();
+		confor.setContentText(content);
+		confor.showAndWait();
 	}
 	
 	public void AlertError(String content) {
 		Alert error = new Alert(AlertType.ERROR);
 		error.setHeaderText("Error");
 		error.setContentText(content);
-		error.show();
+		error.showAndWait();
 	}
 	
 	public static void main(String[] args) {
@@ -298,6 +301,21 @@ public class BuyProductForm extends Application{
 		addWatch();
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+		clearCartBtn.setOnMouseClicked(e -> {
+			
+			AlertConformation("Are you sure to clear cart?");
+//			if (confor.get) {
+//				
+//			}
+			
+			cartlist.clear();
+			refreshTable();
+		});
+		
+		checkOutBtn.setOnMouseClicked(e -> {
+			
+		});
 		
 	}
 
