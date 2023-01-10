@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -90,8 +92,16 @@ public class ManageProductForm extends Application {
 		
 		// Button Area
 		insertWatchBtn = new Button ("Insert Watch");
+		insertWatchBtn.setPrefWidth(100);
+		insertWatchBtn.setPrefHeight(30);
+		
 		updateWatchBtn = new Button ("Update Watch");
+		updateWatchBtn.setPrefWidth(130);
+		updateWatchBtn.setPrefHeight(30);
+		
 		deleteWatchBtn = new Button ("Delete Watch");
+		deleteWatchBtn.setPrefWidth(100);
+		deleteWatchBtn.setPrefHeight(30);
 		
 		// Text Field Area
 		watchNameTF = new TextField ();
@@ -110,7 +120,7 @@ public class ManageProductForm extends Application {
 		}
 		watchBrandCBX.getSelectionModel().select(0);
 		
-		scene = new Scene(bPane, 650, 550);
+		scene = new Scene(bPane, 750, 550);
 		
 	}
 	
@@ -128,14 +138,21 @@ public class ManageProductForm extends Application {
 		column3.setCellValueFactory(new PropertyValueFactory<>("WatchBrand"));
 
 		TableColumn<Watch, Integer> column4 = new TableColumn<>("Watch Price");
-		column4.setCellValueFactory(new PropertyValueFactory<>("watchPrice"));
+		column4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
+		column4.setMinWidth(130);
 
 		TableColumn<Watch, Integer> column5 = new TableColumn<>("Watch Stock");
 		column5.setCellValueFactory(new PropertyValueFactory<>("WatchStock"));
-
+		column5.setMinWidth(110);
+		
 		watchTable.getColumns().addAll(column1,column2,column3,column4,column5);
 
 		VBox vbox = new VBox(watchTable);
+		
+		AlertError("You must select a watch from the table first!");
+		AlertInformation("New watch successfully inserted!");
+		AlertInformation("Watch successfully updated!");
+		AlertInformation("Watch successfully deleted!");
 		
 		watchNameTF.setMinWidth(170);
 		watchPriceTF.setMinWidth(170);
@@ -154,7 +171,7 @@ public class ManageProductForm extends Application {
 		gPane.setAlignment(Pos.CENTER);
 		
 		fPane.setPadding(new Insets(6, 0, 20, 0));
-		fPane.setHgap(10);
+		fPane.setHgap(15);
 		fPane.getChildren().addAll(insertWatchBtn, updateWatchBtn, deleteWatchBtn);
 		fPane.setAlignment(Pos.TOP_CENTER);
 		
@@ -285,7 +302,22 @@ public class ManageProductForm extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	public void AlertError(String content) {
+		Alert error = new Alert(AlertType.ERROR);
+		error.setHeaderText("Error");
+		error.setContentText(content);
+		error.show();
+	}
+	
+	public void AlertInformation(String content) {
+		Alert info = new Alert(AlertType.INFORMATION);
+		info.setHeaderText("Message");
+		info.setContentText(content);
+		info.show();
+	}
 
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
 		initialize();
@@ -298,14 +330,26 @@ public class ManageProductForm extends Application {
 		primaryStage.show();
 	}
 	
-	
-//	public Scene manageProduct() {
-//		initialize();
-//		arrangeComponent();
+//	insertWatchBtn.setOnAction((evt)->{
+//	if(!watchNameTF.getText().endsWith("Watch")) {
 //		
-//		scene = new Scene(bPane, 650, 550);
+//	} else if(!watchPriceTF.getText().equals(0)) {
 //		
-//		return scene;
+//	} else if(watchStockSpn.getValueFactory().equals(0)) {
+//		
+//	} else if(watchBrandCBX.getSelectionModel().equals(0)) {
+//		
+//	} else {
+//		tableView.getItems().add((new Watch(watchNameTF.getText(), watchPriceTF.getText(), watchStockSpn.getValueFactory(), watchBrandCBX.getSelectionModel())));
 //	}
+//});
+////		Alert alert = new Alert(AlertType.ERROR);
+////		alert.setHeaderText("Error name");
+////		alert.setContentText("Invalid name!");
+////		alert.show();
+//	} else {
+//		tableUser.getItems().add((new User(nameTF.getText(), ageSPN.getValue())));
+//	}
+//});
 
 }
