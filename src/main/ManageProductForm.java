@@ -1,6 +1,14 @@
 package main;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import model.Brand;
 import model.Watch;
 
 public class ManageProductForm extends Application {
@@ -33,8 +42,37 @@ public class ManageProductForm extends Application {
 	TextField watchNameTF, watchPriceTF;
 	Spinner<Integer> watchStockSpn;
 	ComboBox<String> watchBrandCBX;
+	TableView<Watch> watchTable;
+	
+	Vector<Brand> brandList = new Vector<Brand>();
+	Vector<Watch> watchList = new Vector<Watch>();
+	
+	Database db = Database.getConnection();
+	
+	Boolean kondisi = false;
+	
+	public void getBrandData() {
+		String query = "SELECT * FROM `brand`";
+		ResultSet rs = db.executeQuery(query);
+		
+		try {
+			while(rs.next()) {
+				int brandID = rs.getInt("BrandID");
+				String brandName = rs.getString("BrandName");
+				
+				Brand brand = new Brand(brandID,brandName);
+				brandList.add(brand);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void initialize() {
+		
+		getBrandData();
 		
 		bPane = new BorderPane();
 		gPane = new GridPane();
@@ -66,13 +104,11 @@ public class ManageProductForm extends Application {
 		
 		// Combo Box Area
 		watchBrandCBX = new ComboBox<>();
-		watchBrandCBX.getItems().add("Rolex");
-		watchBrandCBX.getItems().add("Omega");
-		watchBrandCBX.getItems().add("Fossil");
-		watchBrandCBX.getItems().add("Guess");
-		watchBrandCBX.getItems().add("Alexandre Christie");
-		watchBrandCBX.getItems().add("Casio");
-		watchBrandCBX.getSelectionModel().select(3);
+		watchBrandCBX.getItems().add("Choose One");
+		for(int i = 0; i<brandList.size(); i++) {
+			watchBrandCBX.getItems().add(brandList.get(i).getBrandName());
+		}
+		watchBrandCBX.getSelectionModel().select(0);
 		
 		scene = new Scene(bPane, 650, 550);
 		
@@ -80,34 +116,26 @@ public class ManageProductForm extends Application {
 	
 	public void arrangeComponent() {
 		
-		TableView<Watch> tableView = new TableView<>();
+		watchTable = new TableView<>();
 
-		TableColumn<Watch, String> column1 = new TableColumn<>("Watch ID");
-		column1.setCellValueFactory(new PropertyValueFactory<>("watchId"));
+		TableColumn<Watch, Integer> column1 = new TableColumn<>("Watch ID");
+		column1.setCellValueFactory(new PropertyValueFactory<>("WatchID"));
 
 		TableColumn<Watch, String> column2 = new TableColumn<>("Watch Name");
-		column2.setCellValueFactory(new PropertyValueFactory<>("watchName"));
+		column2.setCellValueFactory(new PropertyValueFactory<>("WatchName"));
 
 		TableColumn<Watch, String> column3 = new TableColumn<>("Watch Brand");
-		column3.setCellValueFactory(new PropertyValueFactory<>("watchBrand"));
+		column3.setCellValueFactory(new PropertyValueFactory<>("WatchBrand"));
 
 		TableColumn<Watch, Integer> column4 = new TableColumn<>("Watch Price");
 		column4.setCellValueFactory(new PropertyValueFactory<>("watchPrice"));
 
 		TableColumn<Watch, Integer> column5 = new TableColumn<>("Watch Stock");
-		column5.setCellValueFactory(new PropertyValueFactory<>("watchStock"));
+		column5.setCellValueFactory(new PropertyValueFactory<>("WatchStock"));
 
-		tableView.getColumns().add(column1);
-		tableView.getColumns().add(column2);
-		tableView.getColumns().add(column3);
-		tableView.getColumns().add(column4);
-		tableView.getColumns().add(column5);
+		watchTable.getColumns().addAll(column1,column2,column3,column4,column5);
 
-		tableView.getItems().add(new Watch(1, "Submariner 300 Watch", "Rolex", 10500, 4));
-		tableView.getItems().add(new Watch(2, "Seamaster Planet Ocean Watch", "Omega", 6900, 5));
-
-		VBox vbox = new VBox(tableView);
-		
+		VBox vbox = new VBox(watchTable);
 		
 		watchNameTF.setMinWidth(170);
 		watchPriceTF.setMinWidth(170);
@@ -130,10 +158,128 @@ public class ManageProductForm extends Application {
 		fPane.getChildren().addAll(insertWatchBtn, updateWatchBtn, deleteWatchBtn);
 		fPane.setAlignment(Pos.TOP_CENTER);
 		
-	
-		bPane.setTop(tableView);
+		bPane.setTop(watchTable);
 		bPane.setCenter(gPane);
 		bPane.setBottom(fPane);
+	}
+	
+	public void getData() {
+		String query = "SELECT * FROM `watch`";
+		ResultSet rs = db.executeQuery(query);
+		
+		try {
+			while(rs.next()) {
+				int watchid = rs.getInt("WatchID");
+				String watchname = rs.getString("WatchName");
+				int watchbrandID = rs.getInt("BrandID");
+				int watchprice = rs.getInt("WatchPrice");
+				int watchstock = rs.getInt("WatchStock");
+				
+				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
+				ResultSet rsb = db.executeQuery2(querybrand);
+				String watchbrand = "";
+				if(rsb.next()) {
+					watchbrand = rsb.getString("BrandName");					
+				}
+				
+				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
+				watchList.add(watch);
+				rsb.close();
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void refreshTable() {
+		watchList.clear();
+		getData();
+		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchList);
+		watchTable.setItems(watchObs);
+	}
+	
+	public void addWatch() {
+		insertWatchBtn.setOnMouseClicked((event)->{
+			String brandName = watchBrandCBX.getValue();
+			
+			if(brandName.equals("Choose One")) {
+				//error
+			} else {
+				brandList.clear();
+				getBrandData();
+				int brandID = 1;
+				for(int i = 0; i<brandList.size(); i++) {
+					if(brandList.get(i).getBrandName().equals(brandName)) {
+						brandID = brandList.get(i).getBrandID();
+					}
+				}
+				
+				String query = String.format("INSERT INTO `watch`(`BrandID`, `WatchName`, `WatchPrice`, `WatchStock`) VALUES ('%d','%s','%d','%d')", brandID,watchNameTF.getText(),Integer.parseInt(watchPriceTF.getText()),watchStockSpn.getValue());
+				db.executeUpdate(query);
+				watchNameTF.setText("");
+				watchPriceTF.setText("");
+				watchStockSpn.getValueFactory().setValue(0);
+				watchBrandCBX.getSelectionModel().select(0);
+				refreshTable();
+			}
+		});
+	}
+	
+	public void editTable() {
+		watchTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Watch>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Watch> observable, Watch oldValue, Watch newValue) {
+				// TODO Auto-generated method stub
+				if (newValue != null) {
+					kondisi = true;
+					
+					brandList.clear();
+					getBrandData();
+					watchNameTF.setText(newValue.getWatchName());
+					watchPriceTF.setText(Integer.toString(newValue.getWatchPrice()));
+					watchStockSpn.getValueFactory().setValue(newValue.getWatchStock());
+					String brandValue = newValue.getWatchBrand();
+					
+					for(int i = 0; i<brandList.size(); i++) {
+						if(brandList.get(i).getBrandName().equals(brandValue)) {
+							watchBrandCBX.getSelectionModel().select(i+1);
+						}
+					}
+					
+					updateWatchBtn.setOnMouseClicked((event)->{
+						String brandName = watchBrandCBX.getValue();
+						brandList.clear();
+						getBrandData();
+						int brandID = 1;
+						for(int i = 0; i<brandList.size(); i++) {
+							if(brandList.get(i).getBrandName().equals(brandName)) {
+								brandID = brandList.get(i).getBrandID();
+							}
+						}
+						String query = String.format("UPDATE `watch` SET `BrandID`='%d',`WatchName`='%s',`WatchPrice`='%d',`WatchStock`='%d' WHERE `WatchID` = %d", brandID,watchNameTF.getText(),Integer.parseInt(watchPriceTF.getText()),watchStockSpn.getValue(),newValue.getWatchID());
+						db.executeUpdate(query);
+						watchNameTF.setText("");
+						watchPriceTF.setText("");
+						watchStockSpn.getValueFactory().setValue(0);
+						watchBrandCBX.getSelectionModel().select(0);
+						refreshTable();
+					});
+					
+					deleteWatchBtn.setOnMouseClicked((event)->{
+						String query = String.format("DELETE FROM `watch` WHERE `WatchID` = %d", newValue.getWatchID());
+						db.executeUpdate(query);
+						watchNameTF.setText("");
+						watchPriceTF.setText("");
+						watchStockSpn.getValueFactory().setValue(0);
+						watchBrandCBX.getSelectionModel().select(0);
+						refreshTable();
+					});
+				}
+			}
+		});
 	}
 	
 	public static void main(String[] args) {
@@ -144,6 +290,9 @@ public class ManageProductForm extends Application {
 	public void start(Stage primaryStage) throws Exception {	
 		initialize();
 		arrangeComponent();
+		refreshTable();
+		addWatch();
+		editTable();
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Manage Product");
 		primaryStage.show();
