@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
@@ -29,8 +30,8 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Cart;
-import model.Watch;
 //import jfxtras.labs.scene.control.window.CloseIcon;
+import model.Watch;
 
 public class BuyProductForm extends Application{
 	
@@ -149,6 +150,7 @@ public class BuyProductForm extends Application{
 			}
 			rs.close();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -158,10 +160,11 @@ public class BuyProductForm extends Application{
 
 			@Override
 			public void changed(ObservableValue<? extends Watch> observable, Watch oldValue, Watch newValue) {
+				// TODO Auto-generated method stub
 				if (newValue != null) {
 					selectWatchLbl.setText("Selected Watch: " + newValue.getWatchName());
 					
-					watchId = newValue.getWatchID();
+					watchId = newValue.getWatchId();
 				}
 			}
 		});
@@ -180,7 +183,11 @@ public class BuyProductForm extends Application{
 	
 	public void addWatch() {
 		addWatchToCartBtn.setOnMouseClicked((event)->{
-			if (!selectWatchLbl.equals("none") && quantitySp.getValue() > 0) {
+			if (watchId < 1) {
+				AlertError("You must select the product!");
+			}else if (quantitySp.getValue() == 0) {
+				AlertError("You must input quantity more than 0!");
+			}else {
 				
 				Cart cart = new Cart(1,watchId,quantitySp.getValue());
 				cartlist.add(cart);
@@ -273,16 +280,6 @@ public class BuyProductForm extends Application{
 		info.showAndWait();
 	}
 	
-	public void AlertConformation(String content) {
-		Alert confor = new Alert(AlertType.CONFIRMATION);
-		confor.setContentText(content);
-<<<<<<< HEAD
-		confor.show();
-=======
-		confor.showAndWait();
->>>>>>> 0f5059a32fcc7050e49956fc4e668fe8c8836100
-	}
-	
 	public void AlertError(String content) {
 		Alert error = new Alert(AlertType.ERROR);
 		error.setHeaderText("Error");
@@ -305,20 +302,36 @@ public class BuyProductForm extends Application{
 		primaryStage.show();
 		
 		clearCartBtn.setOnMouseClicked(e -> {
+			Alert conforclear = new Alert(AlertType.CONFIRMATION);
+			conforclear.setContentText("Are you sure to clear cart?");
+			conforclear.showAndWait().ifPresent(respone -> {
+				if (respone == ButtonType.OK) {
+					cartlist.clear();
+					refreshTable();
+				}
+			});
 			
-			AlertConformation("Are you sure to clear cart?");
-//			if (confor.get) {
-//				
-//			}
-			
-			cartlist.clear();
-			refreshTable();
 		});
 		
 		checkOutBtn.setOnMouseClicked(e -> {
+			Alert conforcheckout = new Alert(AlertType.CONFIRMATION);
+			conforcheckout.setContentText("Are you sure want to checkout?");
+			conforcheckout.showAndWait().ifPresent(respone -> {
+				if (respone == ButtonType.OK) {
+					Alert info = new Alert(AlertType.INFORMATION);
+					info.setHeaderText("Message");
+					info.setContentText("Checkout successful!");
+					
+//					Masukin data cart ke transaction
+					
+					cartlist.clear();
+					refreshTable();
+					info.showAndWait();
+				}
 			
 		});
 		
-	}
+	});
 
+	}
 }

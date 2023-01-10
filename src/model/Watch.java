@@ -2,13 +2,13 @@ package model;
 
 public class Watch {
 	
-	private String watchId;
+	private int watchId;
 	private String watchName;
 	private String watchBrand;
 	private int watchPrice;
 	private int watchStock;
 	
-	public Watch(String watchId, String watchName, String watchBrand, int watchPrice, int watchStock) {
+	public Watch(int watchId, String watchName, String watchBrand, int watchPrice, int watchStock) {
 		super();
 		this.watchId = watchId;
 		this.watchName = watchName;
@@ -17,11 +17,11 @@ public class Watch {
 		this.watchStock = watchStock;
 	}
 
-	public String getWatchId() {
+	public int getWatchId() {
 		return watchId;
 	}
 
-	public void setWatchId(String watchId) {
+	public void setWatchId(int watchId) {
 		this.watchId = watchId;
 	}
 
