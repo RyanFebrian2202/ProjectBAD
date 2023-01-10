@@ -141,8 +141,9 @@ public class ManageBrandForm extends Application{
 
 			@Override
 			public void changed(ObservableValue<? extends Brand> observable, Brand oldValue, Brand newValue) {
-				// TODO Auto-generated method stub
 				if (newValue != null) {
+					brandNameTF.setText(newValue.getBrandName());
+					
 					updateBrandBtn.setOnMouseClicked((event)->{
 						String query = String.format("UPDATE `brand` SET `BrandName`='%s' WHERE `BrandID` = %d", brandNameTF.getText(), newValue.getBrandID());
 						db.executeUpdate(query);
