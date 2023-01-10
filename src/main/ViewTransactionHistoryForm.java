@@ -1,6 +1,8 @@
 package main;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,8 +25,12 @@ public class ViewTransactionHistoryForm extends Application {
 	
 	Label selectedTransactionLbl;
 	
+	TableView<TransactionHistory> tableView1;
+	TableView<Watch> tableView2;
+	
 	int quantity = 0;
 	int subTotal = 0;
+	int transactionId = 0;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -38,13 +44,12 @@ public class ViewTransactionHistoryForm extends Application {
 		selectedTransactionLbl = new Label("Selected Transaction: None");
 		
 		scene = new Scene(bPane, 999, 700);
-		
+				
 	}
 	
 	public void arrangeComponent() {
 		// Codingan untuk Table View Transaction Header
-		TableView tableView1 = new TableView<TransactionHistory>();
-		
+		tableView1 = new TableView<>();
 		TableColumn<TransactionHistory, String> column1 = new TableColumn<>("Transaction ID");
 		column1.setMinWidth(333);
 		column1.setCellValueFactory(new PropertyValueFactory<TransactionHistory, String>("transactionId"));
@@ -63,12 +68,12 @@ public class ViewTransactionHistoryForm extends Application {
 		
 		tableView1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Biar column nya ga bisa di resize
 
-		tableView1.getItems().add(new TransactionHistory("1", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("2", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("3", "2", "2022-05-25"));
-		tableView1.getItems().add(new TransactionHistory("4", "2", "2022-05-28"));
-		tableView1.getItems().add(new TransactionHistory("5", "2", "2022-05-28"));
-		tableView1.getItems().add(new TransactionHistory("6", "2", "2022-05-28"));
+		tableView1.getItems().add(new TransactionHistory(1, 2, "2022-05-25"));
+		tableView1.getItems().add(new TransactionHistory(2, 2, "2022-05-25"));
+		tableView1.getItems().add(new TransactionHistory(3, 2, "2022-05-25"));
+		tableView1.getItems().add(new TransactionHistory(4, 2, "2022-05-28"));
+		tableView1.getItems().add(new TransactionHistory(5, 2, "2022-05-28"));
+		tableView1.getItems().add(new TransactionHistory(6, 2, "2022-05-28"));
 
 		VBox vbox = new VBox(tableView1);
 		
@@ -78,7 +83,7 @@ public class ViewTransactionHistoryForm extends Application {
 		fPane.setAlignment(Pos.CENTER_LEFT);
 		
 		// Codingan untuk Table View Transaction Detail
-		TableView tableView2 = new TableView();
+		tableView2 = new TableView<>();
 		
 		TableColumn<TransactionHistory, String> column4 = new TableColumn<>("Transaction ID");
 		column4.setMinWidth(142);
@@ -86,19 +91,19 @@ public class ViewTransactionHistoryForm extends Application {
 		
 		TableColumn<Watch, String> column5 = new TableColumn<>("Watch ID");
 		column5.setMinWidth(142);
-		column5.setCellValueFactory(new PropertyValueFactory<Watch, String>("watchId"));
+		column5.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchID"));
 		
-		TableColumn<Watch, String> column6 = new TableColumn<Watch, String>("Watch Name");
+		TableColumn<Watch, String> column6 = new TableColumn<Watch, String>("watchName");
 		column6.setMinWidth(143);
-		column6.setCellValueFactory(new PropertyValueFactory<Watch, String>("watchName"));
+		column6.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
 		
 		TableColumn<Watch, String> column7 = new TableColumn<Watch, String>("Watch Brand");
 		column7.setMinWidth(142);
-		column7.setCellValueFactory(new PropertyValueFactory<>("watchBrand"));
+		column7.setCellValueFactory(new PropertyValueFactory<>("WatchBrand"));
 		
 		TableColumn<Watch, Integer> column8 = new TableColumn<>("Watch Price");
 		column8.setMinWidth(142);
-		column8.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchPrice"));
+		column8.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		
 		// blm tau hrs ambil data dari class mana
 		TableColumn column9 = new TableColumn<>("Quantity");
@@ -110,7 +115,7 @@ public class ViewTransactionHistoryForm extends Application {
 		column10.setMinWidth(143);
 		column10.setCellValueFactory(new PropertyValueFactory<>("subTotal"));
 		
-		tableView2.getColumns().add(column4);
+		tableView2.getColumns().add(column4); // Ini error karena gua harus ambil data dari 2 kelas yang beda. Dari kelas Watch dan Transaction History. Sedangkan tableView2 itu gua cuma bisa ambil data dari kelas Watch.
 		tableView2.getColumns().add(column5);
 		tableView2.getColumns().add(column6);
 		tableView2.getColumns().add(column7);
@@ -129,11 +134,24 @@ public class ViewTransactionHistoryForm extends Application {
 		bPane.setBottom(tableView2);
 	}
 	
+	public void selectTable() {
+		tableView1.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TransactionHistory>() {
+			@Override
+			public void changed(ObservableValue<? extends TransactionHistory> observable, TransactionHistory oldValue, TransactionHistory newValue) {
+				if (newValue != null) {
+					selectedTransactionLbl.setText("Selected Watch: " + "Transaction" + newValue.getTransactionId());
+					transactionId = newValue.getTransactionId();
+				}	
+			}
+		});
+	}
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception{
 		initialize();
 		arrangeComponent();
+		selectTable();
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("View Transaction History");
 		primaryStage.show();
