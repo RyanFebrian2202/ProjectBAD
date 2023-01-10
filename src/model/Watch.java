@@ -16,9 +16,11 @@ public class Watch {
 		WatchPrice = watchPrice;
 		WatchStock = watchStock;
 	}
+
 	public int getWatchID() {
 		return WatchID;
 	}
+
 	public void setWatchID(int watchID) {
 		WatchID = watchID;
 	}
