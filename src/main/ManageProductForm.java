@@ -124,8 +124,8 @@ public class ManageProductForm extends Application {
 		
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-		tableView.getItems().add(new Watch("1", "Submariner 300 Watch", "Rolex", 10500, 4));
-		tableView.getItems().add(new Watch("2", "Seamaster Planet Ocean Watch", "Omega", 6900, 5));
+		tableView.getItems().add(new Watch(1, "Submariner 300 Watch", "Rolex", 10500, 4));
+		tableView.getItems().add(new Watch(2, "Seamaster Planet Ocean Watch", "Omega", 6900, 5));
 
 		VBox vbox = new VBox(tableView);
 		
