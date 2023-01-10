@@ -30,8 +30,8 @@ import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Cart;
-//import jfxtras.labs.scene.control.window.CloseIcon;
 import model.Watch;
+//import jfxtras.labs.scene.control.window.CloseIcon;
 
 public class BuyProductForm extends Application{
 	
@@ -63,7 +63,7 @@ public class BuyProductForm extends Application{
 		TableColumn<Watch, Integer> col4 = new TableColumn<Watch, Integer>("Watch Price");
 		TableColumn<Watch, Integer> col5 = new TableColumn<Watch, Integer>("Watch Stock");
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchID"));
+		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchId"));
 		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
 		col3.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchBrand"));
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
