@@ -274,7 +274,7 @@ public class BuyProductForm extends Application{
 	
 	public void AlertConformation(String content) {
 		Alert confor = new Alert(AlertType.CONFIRMATION);
-		confor.setContentText("Data has been successfully added");
+		confor.setContentText(content);
 		confor.show();
 	}
 	

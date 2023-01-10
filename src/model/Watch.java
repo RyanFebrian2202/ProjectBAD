@@ -1,47 +1,60 @@
 package model;
 
 public class Watch {
-	protected String WatchName, WatchBrand;
-	protected int WatchID, WatchPrice, WatchStock;
 	
-	public Watch(int watchID, String watchName, String watchBrand, int watchPrice, int watchStock) {
+	private String watchId;
+	private String watchName;
+	private String watchBrand;
+	private int watchPrice;
+	private int watchStock;
+	
+	public Watch(String watchId, String watchName, String watchBrand, int watchPrice, int watchStock) {
 		super();
-		WatchID = watchID;
-		WatchName = watchName;
-		WatchBrand = watchBrand;
-		WatchPrice = watchPrice;
-		WatchStock = watchStock;
+		this.watchId = watchId;
+		this.watchName = watchName;
+		this.watchBrand = watchBrand;
+		this.watchPrice = watchPrice;
+		this.watchStock = watchStock;
 	}
-	
-	public int getWatchID() {
-		return WatchID;
+
+	public String getWatchId() {
+		return watchId;
 	}
-	public void setWatchID(int watchID) {
-		WatchID = watchID;
+
+	public void setWatchId(String watchId) {
+		this.watchId = watchId;
 	}
+
 	public String getWatchName() {
-		return WatchName;
+		return watchName;
 	}
+
 	public void setWatchName(String watchName) {
-		WatchName = watchName;
+		this.watchName = watchName;
 	}
+
 	public String getWatchBrand() {
-		return WatchBrand;
+		return watchBrand;
 	}
+
 	public void setWatchBrand(String watchBrand) {
-		WatchBrand = watchBrand;
+		this.watchBrand = watchBrand;
 	}
+
 	public int getWatchPrice() {
-		return WatchPrice;
+		return watchPrice;
 	}
+
 	public void setWatchPrice(int watchPrice) {
-		WatchPrice = watchPrice;
+		this.watchPrice = watchPrice;
 	}
+
 	public int getWatchStock() {
-		return WatchStock;
+		return watchStock;
 	}
+
 	public void setWatchStock(int watchStock) {
-		WatchStock = watchStock;
+		this.watchStock = watchStock;
 	}
 	
 	
