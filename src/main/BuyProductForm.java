@@ -194,7 +194,7 @@ public class BuyProductForm extends Application{
 				ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
 				cartTable.setItems(cartObs);
 			}
-			
+			               
 //			String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",1,watchId,quantitySp.getValue());
 //			db.executeUpdate(query);
 		});
@@ -278,6 +278,13 @@ public class BuyProductForm extends Application{
 		info.setHeaderText("Message");
 		info.setContentText(content);
 		info.showAndWait();
+	}
+	
+	public void AlertConformation(String content) {
+		Alert confor = new Alert(AlertType.CONFIRMATION);
+		confor.setContentText(content);
+		confor.show();
+		confor.showAndWait();
 	}
 	
 	public void AlertError(String content) {

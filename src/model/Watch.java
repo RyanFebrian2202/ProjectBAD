@@ -24,35 +24,27 @@ public class Watch {
 	public void setWatchID(int watchID) {
 		WatchID = watchID;
 	}
-
 	public String getWatchName() {
 		return WatchName;
 	}
-
 	public void setWatchName(String watchName) {
 		WatchName = watchName;
 	}
-
 	public String getWatchBrand() {
 		return WatchBrand;
 	}
-
 	public void setWatchBrand(String watchBrand) {
 		WatchBrand = watchBrand;
 	}
-
 	public int getWatchPrice() {
 		return WatchPrice;
 	}
-
 	public void setWatchPrice(int watchPrice) {
 		WatchPrice = watchPrice;
 	}
-
 	public int getWatchStock() {
 		return WatchStock;
 	}
-
 	public void setWatchStock(int watchStock) {
 		WatchStock = watchStock;
 	}

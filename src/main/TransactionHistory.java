@@ -2,30 +2,30 @@ package main;
 
 public class TransactionHistory {
 
-	private String transactionId;
-	private String userId;
+	private int transactionId;
+	private int userId;
 	private String transactionDate;
 	
 	
-	public TransactionHistory(String transactionId, String userId, String transactionDate) {
+	public TransactionHistory(int transactionId, int userId, String transactionDate) {
 		this.transactionId = transactionId;
 		this.userId = userId;
 		this.transactionDate = transactionDate;
 	}
 
-	public String getTransactionId() {
+	public int getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(String transactionId) {
+	public void setTransactionId(int transactionId) {
 		this.transactionId = transactionId;
 	}
 
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 

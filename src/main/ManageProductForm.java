@@ -146,8 +146,6 @@ public class ManageProductForm extends Application {
 		column5.setMinWidth(110);
 		
 		watchTable.getColumns().addAll(column1,column2,column3,column4,column5);
-
-		VBox vbox = new VBox(watchTable);
 		
 		AlertError("You must select a watch from the table first!");
 		AlertInformation("New watch successfully inserted!");
@@ -329,27 +327,5 @@ public class ManageProductForm extends Application {
 		primaryStage.setTitle("Manage Product");
 		primaryStage.show();
 	}
-	
-//	insertWatchBtn.setOnAction((evt)->{
-//	if(!watchNameTF.getText().endsWith("Watch")) {
-//		
-//	} else if(!watchPriceTF.getText().equals(0)) {
-//		
-//	} else if(watchStockSpn.getValueFactory().equals(0)) {
-//		
-//	} else if(watchBrandCBX.getSelectionModel().equals(0)) {
-//		
-//	} else {
-//		tableView.getItems().add((new Watch(watchNameTF.getText(), watchPriceTF.getText(), watchStockSpn.getValueFactory(), watchBrandCBX.getSelectionModel())));
-//	}
-//});
-////		Alert alert = new Alert(AlertType.ERROR);
-////		alert.setHeaderText("Error name");
-////		alert.setContentText("Invalid name!");
-////		alert.show();
-//	} else {
-//		tableUser.getItems().add((new User(nameTF.getText(), ageSPN.getValue())));
-//	}
-//});
 
 }
