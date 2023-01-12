@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
@@ -142,8 +141,7 @@ public class BuyProductForm extends Application{
 			}
 			rs.close();
 			
-			query = String.format("SELECT * FROM `cart` WHERE UserID = %d", LoginForm.getUser().getUserID());
-			rs = db.executeQuery(query);
+			rs = db.executeQuery("SELECT * FROM `cart`");
 			while(rs.next()) {
 				int watchid = rs.getInt("WatchID");
 				int customerid = rs.getInt("UserID");
@@ -292,19 +290,19 @@ public class BuyProductForm extends Application{
 		error.showAndWait();
 	}
 	
-	public void setCartData() {
+	public void Checkout() {
 		System.out.println(watchId);
 		System.out.println();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
 		LocalDate now = LocalDate.now();
-		
-		String query = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `UserID`, `TransactionDate`) " + "VALUES ('%d','%d','%d')"
-				, 0, 0, now);
+		System.out.println(now);
+		String query = String.format("INSERT INTO `headertransaction` " + "(`UserID`, `TransactionDate`) " + "VALUES ('%d','%s')"
+				, 0, now);
 				
 		db.executeUpdate(query);
 				
 		System.out.println();
-//		String query1 = String.format("INSERT INTO `headertransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
+//		String query1 = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
 //				, 0, 0, password, gendervalue, roledefault);
 						
 //		db.executeUpdate(query1);
@@ -348,7 +346,11 @@ public class BuyProductForm extends Application{
 					info.setContentText("Checkout successful!");
 					
 //					Masukin data cart ke transaction
+					Checkout();
 					
+					
+					
+//					hapus cart
 					cartlist.clear();
 					refreshTable();
 					info.showAndWait();
