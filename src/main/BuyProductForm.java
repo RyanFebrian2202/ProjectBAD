@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Vector;
 
 import javafx.application.Application;
@@ -63,7 +65,7 @@ public class BuyProductForm extends Application{
 		TableColumn<Watch, Integer> col4 = new TableColumn<Watch, Integer>("Watch Price");
 		TableColumn<Watch, Integer> col5 = new TableColumn<Watch, Integer>("Watch Stock");
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
+		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchId"));
 		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
 		col3.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchBrand"));
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
@@ -194,7 +196,7 @@ public class BuyProductForm extends Application{
 				ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
 				cartTable.setItems(cartObs);
 			}
-			               
+			
 //			String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",1,watchId,quantitySp.getValue());
 //			db.executeUpdate(query);
 		});
@@ -280,19 +282,33 @@ public class BuyProductForm extends Application{
 		info.showAndWait();
 	}
 	
-	public void AlertConformation(String content) {
-		Alert confor = new Alert(AlertType.CONFIRMATION);
-		confor.setContentText(content);
-		confor.show();
-		confor.showAndWait();
-	}
-	
 	public void AlertError(String content) {
+
 		Alert error = new Alert(AlertType.ERROR);
 		error.setHeaderText("Error");
 		error.setContentText(content);
 		error.showAndWait();
 	}
+	
+	public void setCartData() {
+		System.out.println(watchId);
+		System.out.println();
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
+		LocalDate now = LocalDate.now();
+		
+		String query = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `UserID`, `TransactionDate`) " + "VALUES ('%d','%d','%d')"
+				, 0, 0, now);
+				
+		db.executeUpdate(query);
+				
+		System.out.println();
+//		String query1 = String.format("INSERT INTO `headertransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
+//				, 0, 0, password, gendervalue, roledefault);
+						
+//		db.executeUpdate(query1);
+	}
+		
+
 	
 	public static void main(String[] args) {
 		launch(args);
