@@ -28,20 +28,26 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
-import javafx.stage.Window;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Cart;
 import model.Watch;
-//import jfxtras.labs.scene.control.window.CloseIcon;
+
 
 public class BuyProductForm extends Application{
 	
+	
+//	______________________________________________________________________________________________
+//	KEKNYA SEMUA PAGE DI DALEM MENU BAR, HARUS DIBUAT BORDER PANE DAH SOALNYA ERROR ERROR, TPI BISA JALAN.
+//	RUN AJA COBA
+//	
+
 	Scene scene;
 	BorderPane bPane1, bPanequan;
 	GridPane gPane;
 	FlowPane bottomBtn, QuanPane;
-//	jfxtras.labs.scene.control.window.Window buyproductWindow;
+	Window buyproductWindow;
 
 	
 	Label selectWatchLbl, quantityLbl, watchNameLbl;
@@ -65,13 +71,13 @@ public class BuyProductForm extends Application{
 		TableColumn<Watch, Integer> col4 = new TableColumn<Watch, Integer>("Watch Price");
 		TableColumn<Watch, Integer> col5 = new TableColumn<Watch, Integer>("Watch Stock");
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchId"));
+		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
 		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
 		col3.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchBrand"));
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		col5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
-		watchTable.setMaxSize(650, 250);
+		watchTable.setMaxSize(673, 250);
 		
 //		set minimal ukuran kolom
 		col1.setMinWidth(80);
@@ -212,7 +218,7 @@ public class BuyProductForm extends Application{
 		bottomBtn = new FlowPane();
 		QuanPane = new FlowPane();
 		
-//		buyproductWindow = new jfxtras.labs.scene.control.window.Window("Buy Product");
+		buyproductWindow = new Window("Buy Product");
 		
 		setTableWatch();
 		setTableCart();
@@ -268,10 +274,10 @@ public class BuyProductForm extends Application{
 		
 		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
 
-//		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
-//		buyproductWindow.getContentPane().getChildren().add(bPane1);
+		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
+		buyproductWindow.getContentPane().getChildren().add(bPane1);
 		
-		scene = new Scene(bPane1, 750, 700);
+		scene = new Scene(buyproductWindow, 800, 700);
 		
 	}
 	
