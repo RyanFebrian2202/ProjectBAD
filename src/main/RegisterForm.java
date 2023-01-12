@@ -26,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class RegisterForm extends Application{
+	String gendervalue, roledefault;
 	Scene scene;
 	GridPane grid1;
 	BorderPane border1;
@@ -39,6 +40,7 @@ public class RegisterForm extends Application{
 	ToggleGroup tG;
 	Button RegisBtn, BackBtn;
 	HBox HBX;
+	Database db = Database.getConnection();
 	
 	public void init() {
 		
@@ -49,6 +51,7 @@ public class RegisterForm extends Application{
 		bg2 = new Background(bf2);
 		bg = new Background(bf);
 		bg1 = new Background(bf1);
+		roledefault = "Customer";
 		
 		// std
 		grid1 = new GridPane();
@@ -80,7 +83,18 @@ public class RegisterForm extends Application{
 		FemaleRB = new RadioButton("Female");		
 		tG = new ToggleGroup();
 		MaleRB.setToggleGroup(tG);
-		FemaleRB.setToggleGroup(tG);		
+		FemaleRB.setToggleGroup(tG);	
+		
+		MaleRB.setOnAction((event) -> {
+			gendervalue = MaleRB.getText();
+		});
+		
+		FemaleRB.setOnAction((event) -> {
+			gendervalue = FemaleRB.getText();
+		});
+		
+		
+		
 		HBX = new HBox(10);
 		HBX.getChildren().addAll(MaleRB, FemaleRB);
 		
@@ -126,59 +140,74 @@ public class RegisterForm extends Application{
 	
 	public void valid() {
 		// validasi Regis
+				RadioButton pick = (RadioButton) tG.getSelectedToggle();		
+		
 				// Name length must be between 5 - 40 characters.
 				String name = NameTF.getText();
-				if (name.length() < 5 || name.length() > 40) {
-				  Alert alert0 = new Alert(AlertType.ERROR);
-				  alert0.setContentText("Name must be between 5 and 40 characters!");
-				  alert0.showAndWait();
-				  
-				}
-				
-				// Gender must be chosen, either “Male” or “Female”.
-				RadioButton pick = (RadioButton) tG.getSelectedToggle();
-				if (pick == null) {
-
-				  Alert alert1 = new Alert(AlertType.ERROR, "Please select a gender!");
-				  alert1.showAndWait();
-				  
-				}
-				
 				String email = EmailTF.getText();
 				String pattern = "^[a-zA-Z0-9_+&*-]+(?:\\." +
 				                 "[a-zA-Z0-9_+&*-]+)*@" +
 				                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
 				                 "A-Z]{2,7}$";
-				
-				// validasi email
-				if (!email.matches(pattern)) {
-				  Alert alert2 = new Alert(AlertType.ERROR, "Please enter a valid email address!");
-				  alert2.showAndWait();
-				  
-				}
-				
-				// Character ‘@’ must not be next to ‘.’.
-				if (email.contains("@.") || email.contains("..")) {
-					  Alert alert3 = new Alert(AlertType.ERROR, "Character ‘@’ must not be next to ‘.’!");
-					  alert3.showAndWait();
-					  
-					}
-				
-				//	Must not starts and ends with ‘@’ nor ‘.’.
-				if (email.startsWith("@") || email.startsWith(".") || email.endsWith("@") || email.endsWith(".")) {
-				  Alert alert4 = new Alert(AlertType.ERROR, "Email must not start or end with '@' or '.'!");
-				  alert4.showAndWait();
-				  
-				}
-				
-				//	Must contain exactly one ‘@’.
 				int atCount = email.length() - email.replace("@", "").length();
-				if (atCount != 1) {
-				  Alert alert5 = new Alert(AlertType.ERROR, "Email must contain exactly one '@' symbol!");
-				  alert5.showAndWait();
-				  
-				}
+				String password = pwRegisPF.getText();
+				String confirm = ConfirmPwRegisPF.getText();
 				
+				
+				if (name.length() < 5 || name.length() > 40) {
+				  Alert alert0 = new Alert(AlertType.ERROR);
+				  alert0.setContentText("Name must be between 5 and 40 characters!");
+				  alert0.showAndWait();
+				  
+				}else if (pick == null) {
+					// Gender must be chosen, either “Male” or “Female”.
+					  Alert alert1 = new Alert(AlertType.ERROR, "Please select a gender!");
+					  alert1.showAndWait();
+				}else if (!email.matches(pattern)) {
+					// validasi email
+					  Alert alert2 = new Alert(AlertType.ERROR, "Please enter a valid email address!");
+					  alert2.showAndWait();
+				}else if (email.contains("@.") || email.contains("..")) {
+					// Character ‘@’ must not be next to ‘.’.
+						  Alert alert3 = new Alert(AlertType.ERROR, "Character ‘@’ must not be next to ‘.’!");
+						  alert3.showAndWait();
+				}else if (email.startsWith("@") || email.startsWith(".") || email.endsWith("@") || email.endsWith(".")) {
+//					Must not starts and ends with ‘@’ nor ‘.’.
+					  Alert alert4 = new Alert(AlertType.ERROR, "Email must not start or end with '@' or '.'!");
+					  alert4.showAndWait();
+				}else if (atCount != 1) {
+//					Must contain exactly one ‘@’.
+					  Alert alert5 = new Alert(AlertType.ERROR, "Email must contain exactly one '@' symbol!");
+					  alert5.showAndWait();
+				}else if (!email.endsWith(".com")) {
+//					Must ends with ‘.com’
+					  Alert alert7 = new Alert(AlertType.ERROR, "Email must end with '.com'!");
+					  alert7.showAndWait();
+				}else if (password.length() < 6 || password.length() > 20) {
+					//	Password length must be between 6 - 20 characters.
+						  Alert alert8 = new Alert(AlertType.ERROR, "Password must be between 6 and 20 characters!");
+						  alert8.showAndWait();
+				}else if (!password.equals(confirm)) {
+//					Confirm Password must be same as Password.
+					  Alert alert9 = new Alert(AlertType.ERROR, "Password and confirm password do not match!");
+					  alert9.showAndWait();
+				}else {
+					System.out.println(name);
+					System.out.println(gendervalue);
+					System.out.println(email);
+					System.out.println(password);
+					System.out.println(roledefault);
+					
+					String query = String.format("INSERT INTO `user` " + "(`UserName`, `UserEmail`, `UserPassword`, `UserGender`, `UserRole`) " + "VALUES ('%s','%s','%s','%s','%s')"
+					, name, email, password, gendervalue, roledefault);
+					
+					db.executeUpdate(query);
+					
+					Alert alertsucess = new Alert(AlertType.INFORMATION, "Register successful!");
+					alertsucess.showAndWait();
+					
+				}
+
 				// Must contain exactly one ‘.’ after ‘@’ for separating [provider] and “com”.
 //				int dotCount = email.substring(email.indexOf("@")) - email.substring(email.indexOf("@")).replace(".", "").length();
 //				if (dotCount != 1) {
@@ -187,28 +216,11 @@ public class RegisterForm extends Application{
 //				  
 //				}
 				
-				//	Must ends with ‘.com’
-				if (!email.endsWith(".com")) {
-				  Alert alert7 = new Alert(AlertType.ERROR, "Email must end with '.com'!");
-				  alert7.showAndWait();
-				  
-				}
-				
-				//	Password length must be between 6 - 20 characters.
-				String password = pwRegisPF.getText();
-				String confirm = ConfirmPwRegisPF.getText();
-				if (password.length() < 6 || password.length() > 20) {
-				  Alert alert8 = new Alert(AlertType.ERROR, "Password must be between 6 and 20 characters!");
-				  alert8.showAndWait();
-				  
-				}
-				
-				//	Confirm Password must be same as Password.
-				if (!password.equals(confirm)) {
-				  Alert alert9 = new Alert(AlertType.ERROR, "Password and confirm password do not match!");
-				  alert9.showAndWait();
-				  
-				}
+		
+	}
+	
+	public void insertUser() {
+		
 	}
 	
 	public static void main(String[] args) {
@@ -229,12 +241,5 @@ public class RegisterForm extends Application{
 			valid();
 		});
 	}
-
-	public static Node getRoot() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 }
