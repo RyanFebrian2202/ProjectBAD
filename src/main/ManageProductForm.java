@@ -297,16 +297,7 @@ public class ManageProductForm extends Application {
 						refreshTable();
 					});
 				
-				} else {	
-					
-					updateWatchBtn.setOnMouseClicked((event)->{
-					AlertError("You must select a watch from the table first!");
-					});
-					
-					deleteWatchBtn.setOnMouseClicked((event)->{
-					AlertError("You must select a watch from the table first!");
-					});
-				}
+				} 	
 			}
 		});
 	}
@@ -340,8 +331,15 @@ public class ManageProductForm extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Manage Product");
 		primaryStage.show();
+		
+		updateWatchBtn.setOnMouseClicked((event)->{
+			AlertError("You must select a watch from the table first!");
+		});
+			
+		deleteWatchBtn.setOnMouseClicked((event)->{
+			AlertError("You must select a watch from the table first!");
+		});
 	}
-
 }
 
 
