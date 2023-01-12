@@ -57,34 +57,36 @@ public class AdminMain extends Application{
 		launch(args);
 	}
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void showPage() {
 		initialize();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Main Page");
 		
-		manageProductMI.setOnAction((event) -> {
-			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
-			ManageProductForm mpf = new ManageProductForm();
-			try {
-				mpf.start(primaryStage);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		manageBrandMI.setOnAction((event)->{
+			ManageBrandForm mbf = ManageBrandForm.getInstance();
+			bPane.setCenter(mbf.getWindow());
 		});
 		
-		logOutMI.setOnAction((event) -> {
-			System.out.println("Balik ke Login");
-			LoginRegisForm lrf = new LoginRegisForm();
-			try {
-				lrf.start(primaryStage);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+//		manageProductMI.setOnAction((event) -> {
+//			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
+//			ManageProductForm mpf = new ManageProductForm();
+//			try {
+//				mpf.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
+//		
+//		logOutMI.setOnAction((event) -> {
+//			System.out.println("Balik ke Login");
+//			LoginRegisForm lrf = new LoginRegisForm();
+//			try {
+//				lrf.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
 		
-		primaryStage.show();
+		Main.changeScene(scene, "Manage Admin");
 	}
 }

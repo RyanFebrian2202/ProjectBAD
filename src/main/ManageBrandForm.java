@@ -32,6 +32,8 @@ import model.Watch;
 
 public class ManageBrandForm extends Application{
 	
+	private static ManageBrandForm instance;
+	
 	Scene scene;
 	BorderPane bPane;
 	GridPane gPane;
@@ -46,6 +48,13 @@ public class ManageBrandForm extends Application{
 	Window windowBrand;
 	
 	Vector<Brand> brandList = new Vector<Brand>();
+	
+	public static ManageBrandForm getInstance() {
+		if (instance == null) {
+			instance = new ManageBrandForm();
+		}
+		return instance;
+	}
 	
 	public void initialize() {
 		bPane = new BorderPane();
@@ -68,6 +77,7 @@ public class ManageBrandForm extends Application{
 		scrollPane = new ScrollPane();
 		
 		windowBrand = new Window("Manage Brand");
+		windowBrand.getContentPane().getChildren().add(bPane);
 		
 		scene = new Scene(bPane, 450, 550);
 	}
@@ -102,6 +112,7 @@ public class ManageBrandForm extends Application{
 		bPane.setTop(brandTable);
 		bPane.setCenter(gPane);
 		bPane.setBottom(fPane);
+
 		scrollPane.setContent(bPane);
 	}
 	
@@ -167,6 +178,16 @@ public class ManageBrandForm extends Application{
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	public Window getWindow() {
+		initialize();
+		arrangeComponent();
+		refreshTable();
+		addBrand();
+		editTable();
+		
+		return windowBrand;
 	}
 
 	@Override
