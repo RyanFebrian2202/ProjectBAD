@@ -25,7 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import jfxtras.labs.scene.control.window.Window;
+//import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Cart;
 import model.Watch;
@@ -43,7 +43,7 @@ public class ManageBrandForm extends Application{
 	ScrollPane scrollPane;
 	Database db = Database.getConnection();
 	TableView<Brand> brandTable;
-	Window windowBrand;
+//	Window windowBrand;
 	
 	Vector<Brand> brandList = new Vector<Brand>();
 	
@@ -67,7 +67,7 @@ public class ManageBrandForm extends Application{
 		
 		scrollPane = new ScrollPane();
 		
-		windowBrand = new Window("Manage Brand");
+//		windowBrand = new Window("Manage Brand");
 		
 		scene = new Scene(bPane, 450, 550);
 	}
