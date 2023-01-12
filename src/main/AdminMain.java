@@ -65,6 +65,7 @@ public class AdminMain extends Application{
 			bPane.setCenter(mbf.getWindow());
 		});
 		
+<<<<<<< HEAD
 //		manageProductMI.setOnAction((event) -> {
 //			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
 //			ManageProductForm mpf = new ManageProductForm();
@@ -86,6 +87,12 @@ public class AdminMain extends Application{
 //				e.printStackTrace();
 //			}
 //		});
+=======
+		logOutMI.setOnAction((event) -> {
+			System.out.println("Balik ke Login");
+			
+		});
+>>>>>>> 99c4fb5e1e2838f715a3cba7862af11dd397421b
 		
 		Main.changeScene(scene, "Manage Admin");
 	}

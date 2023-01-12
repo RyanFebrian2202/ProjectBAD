@@ -1,13 +1,11 @@
 package main;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -15,241 +13,136 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginForm extends Application {
 	
+	Scene scene;
+	Background bgL, bgL1, bgL2;
+	BackgroundFill bfL, bfL1, bfL2;
+	
+	//login
 	GridPane grid;
-	Stage RegisPage;
+	BorderPane border;
+	Label TitleLogin, emailLogin, pwLogin;
+	TextField emailTextField;
+	PasswordField pwLoginPF;
+	Button LoginBtn, RegisInsteadBtn;
 	
-	Label title, email, pw;
-	TextField emailTF;
-	PasswordField pwPF;
-	Button loginBtn, regisBtn;
-	StackPane stackPane;
-	Scene scene, sceneRegis;
-	Rectangle rectangle;
 	
-	public void init() {
-//		retangle blkngnnya pke stack pane
+public void init() {
+	
+	// buat kotak putihny
+	bfL = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
+	bfL1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+	bfL2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+	bgL2 = new Background(bfL2);
+	bgL = new Background(bfL);
+	bgL1 = new Background(bfL1);
+	
+	// std
+	grid = new GridPane();
+	border = new BorderPane();
+	
+	
+	// label
+	TitleLogin = new Label("Watches Dealer Login");
+	TitleLogin.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+	emailLogin = new Label("Email :");
+	pwLogin = new Label("Password :");
+	emailTextField = new TextField();
+	emailTextField.setPromptText("Email Address");
+	pwLoginPF = new PasswordField();
+	pwLoginPF.setPromptText("Password");
+	
+	//button
+	LoginBtn = new Button("Login");
+	LoginBtn.setMinWidth(200);
+	LoginBtn.setBackground(bgL1);
+	LoginBtn.setTextFill(Color.WHITE);
+	RegisInsteadBtn = new Button("Register Instead");
+	RegisInsteadBtn.setMinWidth(200);
+	RegisInsteadBtn.setBackground(bgL1);
+	RegisInsteadBtn.setTextFill(Color.WHITE);
+	
+	//posisi grid
+	grid.add(TitleLogin, 0, 0);
+	grid.add(emailLogin, 0, 1);
+	grid.add(emailTextField, 0, 2);
+	grid.add(pwLogin, 0, 3);
+	grid.add(pwLoginPF, 0, 4);
+	grid.add(LoginBtn, 0, 5);
+	grid.add(RegisInsteadBtn, 0, 6);
+	
+	// posisi
+	grid.setAlignment(Pos.CENTER);
+	grid.setVgap(20);
+	grid.setHgap(20);	
+	GridPane.setHalignment(TitleLogin, HPos.CENTER);
+	grid.setBackground(bgL2);
+	
+	BorderPane.setMargin(grid, new Insets(120));
+
+	border.setCenter(grid);
+	border.setBackground(bgL);
+	
+	scene = new Scene(border, 650, 600);
+}
+	
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		init();		
+		stage.setTitle("Login");
+		scene.setFill(Color.PALETURQUOISE);
+		stage.setScene(scene);
+		stage.show();
 		
-        
-//    	Grid Pane
-        
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(15);
-        grid.setVgap(15);
-        grid.setPadding(new Insets(25, 25, 25, 25));
-        
-//      Label Title
-        title = new Label("Watches Dealer Login");
-        title.setFont(Font.font("Calibri", FontWeight.BOLD, 20));
-        title.setAlignment(Pos.CENTER);
-        grid.add(title, 1, 0, 1, 1);
-        
-//      Label Email
-        email = new Label("Email :");
-        grid.add(email, 1, 1);
-
-//      Email Text Field
-        emailTF = new TextField();
-        emailTF.setPromptText("Email Address");
-        emailTF.setMinWidth(250);
-        grid.add(emailTF, 1, 2);
-        
-
-//      Label Password
-        pw = new Label("Password :");
-        grid.add(pw, 1, 3);
-
-//      Password Field
-        pwPF = new PasswordField();
-        pwPF.setPromptText("Password");
-        pwPF.setMinWidth(250);
-        grid.add(pwPF, 1, 4);
-
-//      Login Button
-        loginBtn = new Button("Login");
-        loginBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        loginBtn.setTextFill(Color.WHITE);
-        loginBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
-//        HBox hbBtn = new HBox(10);
-//        hbBtn.setAlignment(Pos.CENTER);
-//        hbBtn.getChildren().add(loginBtn);
-        loginBtn.setMinWidth(250);
-        loginBtn.setAlignment(Pos.CENTER);
-        grid.add(loginBtn, 1, 5);
-        
-//      Regis Button
-        regisBtn = new Button("Register Instead");
-        regisBtn.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        regisBtn.setTextFill(Color.WHITE);
-        regisBtn.setFont(Font.font("System", FontWeight.BOLD, 10));
-//        HBox hbBtn1 = new HBox(10);
-//        hbBtn1.setAlignment(Pos.CENTER);
-//        hbBtn1.getChildren().add(regisBtn);
-        regisBtn.setMinWidth(250);
-        regisBtn.setAlignment(Pos.CENTER);
-        grid.add(regisBtn, 1, 6);
-        
-//        kalo ditambah backgroup kotak putihnya ilang
-//        grid.setStyle("-fx-background-color: lightcyan;");
-        
-//      Rectangle Belakang
-        rectangle = new Rectangle(400, 400);
-        rectangle.setFill(Color.WHITE);
-        
-//      StackPane (Buat numpuk rectangle sama gridpane)
-        stackPane = new StackPane();
-        stackPane.getChildren().add(rectangle);
-        stackPane.getChildren().add(grid);
-        
-//      Scene
-        scene = new Scene(stackPane, 600, 650);
-	}
-	
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage stage) {
-    	init();	
-    	
-    	regisBtn.setOnAction( (event) -> {
-			System.out.println("Pindah ke regis");
+		
+		RegisInsteadBtn.setOnAction( (event) -> {
+			System.out.println("Pindah ke border Regis");
+//			border.setCenter(Regis);
 		});
     	
-    	loginBtn.setOnAction( (event) -> {
-    		System.out.println("Masuk Aplikasi");
+    	LoginBtn.setOnAction( (event1) -> {
+    		System.out.println("Masuk APK");
     	});
-    	
-    	stage.setTitle("Login");
-    	stage.setScene(scene);
-    	stage.show();
-    	
-    	
-//    	j = stage;
-//        j.setMaximized(true);
-//        
-//        
-//        Pane l1 = new Pane ();
-//
-//        c1 = new Scene(l1, Color.WHITE);
-//
+		
+		LoginBtn.setOnAction(event -> {
+			if (emailTextField.getText().isEmpty()) {
+				showErrorAlert("Email field must be filled.");
+			} else if (pwLoginPF.getText().isEmpty()) {
+				showErrorAlert("Password field must be filled.");
+			} 
+//        else {
+//            // Check email + password match database
+//            boolean loginSuccessful = checkData
+//    }
+			
+			
+		});
+		
+		
+		// Add Regis class ke stack pane
+//		Regis otherClass = new Regis();
 //        StackPane root = new StackPane();
-//        root.setStyle("-fx-background-color:white;");
-//        root.getChildren().add(l1);
-//        c1 = new Scene(root);
-//        
-//        TextField consulta = new TextField();
-//        l1.setPadding(new Insets(10));
-//        l1.getChildren().add(consulta);
-//        consulta.setLayoutX(50);
-//        consulta.setLayoutY(110);
-//
-//        Rectangle r = new Rectangle(0, 0, 50, 50);
-//        r.setFill(Color.WHITE);
-//        l1.getChildren().addAll(r);
-    	
+//        root.getChildren().add(Regis.getRoot());		
+	}		
+	
+	private void showErrorAlert(String string) {
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("Error");
+        alert.setContentText("Invalid credential!");
+        alert.showAndWait();		
+	}
 
-
-        
-
-        
-//        BorderPane mainPane = new BorderPane();
-//		BorderPane loginValidate = new Login();
-//		BorderPane registerPage = new Register();
-//        // ke main form
-//        btn.setOnAction((event) -> {
-//			mainPane.setCenter(loginValidate);
-//		});
-//		
-//        // ke register form
-//		btn1.setOnAction((event1) ->{
-//			mainPane.setCenter(registerForm);
-//		});
-        
-//     	
-        // mid rectangle
-//        Rectangle rectangle = new Rectangle(400,600);
-//        rectangle.setFill(Color.WHITE);
-//        
-////        rectangle.setArcWidth(1);
-//        grid.getChildren().add(rectangle);
-        
-        
-        
-        
-//        final Text actiontarget = new Text();
-//        grid.add(actiontarget, 1, 6);
-//        
-        
-        // masuk registration page
-//        btn1.setOnAction(event -> {
-//        	try {
-//        	    FXMLLoader loader = new FXMLLoader(getClass().getResource("registration.fxml"));
-//        	    Parent root = loader.load();
-//
-//        	    Scene scene = new Scene(root);
-//
-//        	    Stage stage = (Stage) btn1.getScene().getWindow();
-//        	    stage.setScene(scene);
-//        	} catch (IOException e) {
-//        	    // handle the exception
-//        	}
-//        	
-//        });
-        
-//        boolean field = false;
-//        private boolean isFieldEmpty(String field) {
-//            return field == null || field.trim().isEmpty();
-//            if (isFieldEmpty(emailTextField.getText())) {
-//                // show an error message indicating that the field is required
-//            } else {
-//                // perform further processing or validation on the input
-//            }
-//        }
-        
-        // validate data
-//        btn.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                // validate the input and authenticate the user
-//                String email = emailTextField.getText();
-//                String password = pwBox.getText();
-//                if (isValidEmail(email) && isValidPassword(password)) {
-//                    // authenticate the user using the email and password
-//                    boolean authenticated = authenticate(email, password);
-//                    if (authenticated) {
-//                        // navigate to the home page
-//                    } else {
-//                        // show an error message indicating that the email or password is incorrect
-//                    }
-//                } else {
-//                    // show an error message indicating that the email or password is invalid
-//                }
-//            }
-//        });        
-        
-//        regisBtn.setOnAction(event -> {
-//            // navigate to the registration page
-//        });
-        
-      
-        
-       
-        
-//        j.setScene(c1);
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 }
