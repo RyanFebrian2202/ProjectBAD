@@ -76,13 +76,7 @@ public class AdminMain extends Application{
 		
 		logOutMI.setOnAction((event) -> {
 			System.out.println("Balik ke Login");
-			LoginRegisForm lrf = new LoginRegisForm();
-			try {
-				lrf.start(primaryStage);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		});
 		
 		primaryStage.show();
