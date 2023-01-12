@@ -9,16 +9,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
-public class AdminMain extends Application{
+public class AdminMain{
 
-	Scene scene;
+	private static AdminMain instance;
 	
+	Scene scene;
 	BorderPane bPane;
 	
 	MenuBar menuBar;
 	Menu userMenu, managementMenu;
 	MenuItem logOutMI, manageProductMI, manageBrandMI; 
 	
+	public static AdminMain getInsance() {
+		if (instance == null) {
+			instance = new AdminMain();
+		}
+		return instance;
+	}
 	
 	public void initialize() {
 		bPane = new BorderPane();
@@ -53,32 +60,42 @@ public class AdminMain extends Application{
 		
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void showPage() {
 		initialize();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Main Page");
 		
-		manageProductMI.setOnAction((event) -> {
-			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
-			ManageProductForm mpf = new ManageProductForm();
-			try {
-				mpf.start(primaryStage);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		manageBrandMI.setOnAction((event)->{
+			ManageBrandForm mbf = ManageBrandForm.getInstance();
+			bPane.setCenter(mbf.getWindow());
 		});
+		
+//		manageProductMI.setOnAction((event) -> {
+//			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
+//			ManageProductForm mpf = new ManageProductForm();
+//			try {
+//				mpf.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
+//		
+//		logOutMI.setOnAction((event) -> {
+//			System.out.println("Balik ke Login");
+//			LoginRegisForm lrf = new LoginRegisForm();
+//			try {
+//				lrf.start(primaryStage);
+//			} catch (Exception e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		});
 		
 		logOutMI.setOnAction((event) -> {
-			System.out.println("Balik ke Login");
-			
+			LoginForm.setUser(null);
+			LoginForm lf = LoginForm.getInstance();
+			lf.showLogin();
 		});
 		
-		primaryStage.show();
+		Main.changeScene(scene, "Admin Main");
 	}
 }

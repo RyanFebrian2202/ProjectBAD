@@ -25,14 +25,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.Window;
 //import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Cart;
 import model.Watch;
 
-public class ManageBrandForm extends Application{
+public class ManageBrandForm{
 	
-	Scene scene;
+	private static ManageBrandForm instance;
+	
+//	Scene scene;
 	BorderPane bPane;
 	GridPane gPane;
 	FlowPane fPane;
@@ -43,9 +46,16 @@ public class ManageBrandForm extends Application{
 	ScrollPane scrollPane;
 	Database db = Database.getConnection();
 	TableView<Brand> brandTable;
-//	Window windowBrand;
+	Window windowBrand;
 	
 	Vector<Brand> brandList = new Vector<Brand>();
+	
+	public static ManageBrandForm getInstance() {
+		if (instance == null) {
+			instance = new ManageBrandForm();
+		}
+		return instance;
+	}
 	
 	public void initialize() {
 		bPane = new BorderPane();
@@ -67,9 +77,10 @@ public class ManageBrandForm extends Application{
 		
 		scrollPane = new ScrollPane();
 		
-//		windowBrand = new Window("Manage Brand");
+		windowBrand = new Window("Manage Brand");
+		windowBrand.getContentPane().getChildren().add(bPane);
 		
-		scene = new Scene(bPane, 450, 550);
+//		scene = new Scene(bPane, 450, 550);
 	}
 	
 	public void arrangeComponent() {
@@ -102,6 +113,7 @@ public class ManageBrandForm extends Application{
 		bPane.setTop(brandTable);
 		bPane.setCenter(gPane);
 		bPane.setBottom(fPane);
+
 		scrollPane.setContent(bPane);
 	}
 	
@@ -164,20 +176,25 @@ public class ManageBrandForm extends Application{
 			}
 		});
 	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {	
+	
+	public Window getWindow() {
 		initialize();
 		arrangeComponent();
 		refreshTable();
 		addBrand();
 		editTable();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Manage Brand");
-		primaryStage.show();
+		
+		return windowBrand;
 	}
+//
+//	public void test() {	
+//		initialize();
+//		arrangeComponent();
+//		refreshTable();
+//		addBrand();
+//		editTable();
+//		primaryStage.setScene(scene);
+//		primaryStage.setTitle("Manage Brand");
+//		primaryStage.show();
+//	}
 }

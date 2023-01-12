@@ -9,7 +9,9 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-public class CustomerMain extends Application{
+public class CustomerMain{
+	
+	private static CustomerMain instance;
 
 	Scene scene;
 	
@@ -18,6 +20,14 @@ public class CustomerMain extends Application{
 	MenuBar menuBar;
 	Menu userMenu, managementMenu;
 	MenuItem logOutMI, buyWatchMI, myTransactionHistoryMI; 
+	
+	public static CustomerMain getInstance() {
+		if (instance == null) {
+			instance = new CustomerMain();
+		}
+		
+		return instance;
+	}
 	
 	public void initialize() {
 		bPane = new BorderPane();
@@ -56,26 +66,20 @@ public class CustomerMain extends Application{
 		});
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void showCustomerPage() {
 		initialize();
-		
-		
 		
 		myTransactionHistoryMI.setOnAction((event) -> {
 			System.out.println("Masuk ke manage brand tpi masih di dlaam main form");
 		});
 		
+		logOutMI.setOnAction((event)->{
+			LoginForm.setUser(null);
+			LoginForm lf = LoginForm.getInstance();
+			lf.showLogin();
+		});
 		
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Main Page");
-		primaryStage.show();
-		
+		Main.changeScene(scene, "Customer Main");
 	}
 
 	
