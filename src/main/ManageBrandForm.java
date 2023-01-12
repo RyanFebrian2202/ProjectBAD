@@ -25,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 //import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
@@ -32,7 +33,12 @@ import model.Cart;
 import model.Watch;
 
 public class ManageBrandForm{
-	
+//	__________________________________
+//	Tinggal buat dia keliatan sampe bwah, soalnya masih kepotong -vincent
+//	
+//	
+//	
+//	
 	private static ManageBrandForm instance;
 	
 //	Scene scene;
@@ -78,6 +84,7 @@ public class ManageBrandForm{
 		scrollPane = new ScrollPane();
 		
 		windowBrand = new Window("Manage Brand");
+		windowBrand.getRightIcons().add(new CloseIcon(windowBrand));
 		windowBrand.getContentPane().getChildren().add(bPane);
 		
 //		scene = new Scene(bPane, 450, 550);
@@ -94,6 +101,10 @@ public class ManageBrandForm{
 		
 		brandTable.getColumns().addAll(brandIdColumn,brandNameColumn);
 		
+		brandTable.setMaxSize(452, 400);
+		brandIdColumn.setMinWidth(450/2);
+		brandNameColumn.setMinWidth(450/2);
+		
 		brandNameTF.setMinWidth(170);
 		
 		gPane.add(watchBrandLbl, 0, 0);
@@ -109,11 +120,13 @@ public class ManageBrandForm{
 		fPane.getChildren().addAll(insertBrandBtn, updateBrandBtn, deleteBrandBtn);
 		fPane.setAlignment(Pos.TOP_CENTER);
 		
-	
+		
 		bPane.setTop(brandTable);
 		bPane.setCenter(gPane);
 		bPane.setBottom(fPane);
 
+		bPane.setAlignment(brandTable, Pos.TOP_CENTER);
+		
 		scrollPane.setContent(bPane);
 	}
 	
