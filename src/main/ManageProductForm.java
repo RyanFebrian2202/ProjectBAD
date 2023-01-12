@@ -9,6 +9,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -121,7 +123,6 @@ public class ManageProductForm extends Application {
 		watchBrandCBX.getSelectionModel().select(0);
 		
 		scene = new Scene(bPane, 750, 550);
-		
 	}
 	
 	public void arrangeComponent() {
@@ -130,27 +131,27 @@ public class ManageProductForm extends Application {
 
 		TableColumn<Watch, Integer> column1 = new TableColumn<>("Watch ID");
 		column1.setCellValueFactory(new PropertyValueFactory<>("WatchID"));
+		column1.setMinWidth(150);
 
 		TableColumn<Watch, String> column2 = new TableColumn<>("Watch Name");
 		column2.setCellValueFactory(new PropertyValueFactory<>("WatchName"));
+		column2.setMinWidth(150);
 
 		TableColumn<Watch, String> column3 = new TableColumn<>("Watch Brand");
 		column3.setCellValueFactory(new PropertyValueFactory<>("WatchBrand"));
+		column3.setMinWidth(150);
 
 		TableColumn<Watch, Integer> column4 = new TableColumn<>("Watch Price");
 		column4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
-		column4.setMinWidth(130);
+		column4.setMinWidth(150);
 
 		TableColumn<Watch, Integer> column5 = new TableColumn<>("Watch Stock");
 		column5.setCellValueFactory(new PropertyValueFactory<>("WatchStock"));
-		column5.setMinWidth(110);
+		column5.setMinWidth(150);
 		
 		watchTable.getColumns().addAll(column1,column2,column3,column4,column5);
 		
-		AlertError("You must select a watch from the table first!");
-		AlertInformation("New watch successfully inserted!");
-		AlertInformation("Watch successfully updated!");
-		AlertInformation("Watch successfully deleted!");
+		watchTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
 		watchNameTF.setMinWidth(170);
 		watchPriceTF.setMinWidth(170);
@@ -237,6 +238,7 @@ public class ManageProductForm extends Application {
 				watchPriceTF.setText("");
 				watchStockSpn.getValueFactory().setValue(0);
 				watchBrandCBX.getSelectionModel().select(0);
+				AlertInformation("New watch successfully inserted!");
 				refreshTable();
 			}
 		});
@@ -250,7 +252,7 @@ public class ManageProductForm extends Application {
 				// TODO Auto-generated method stub
 				if (newValue != null) {
 					kondisi = true;
-					
+
 					brandList.clear();
 					getBrandData();
 					watchNameTF.setText(newValue.getWatchName());
@@ -280,6 +282,7 @@ public class ManageProductForm extends Application {
 						watchPriceTF.setText("");
 						watchStockSpn.getValueFactory().setValue(0);
 						watchBrandCBX.getSelectionModel().select(0);
+						AlertInformation("Watch successfully updated!");
 						refreshTable();
 					});
 					
@@ -290,7 +293,18 @@ public class ManageProductForm extends Application {
 						watchPriceTF.setText("");
 						watchStockSpn.getValueFactory().setValue(0);
 						watchBrandCBX.getSelectionModel().select(0);
+						AlertInformation("Watch successfully deleted!");
 						refreshTable();
+					});
+				
+				} else {	
+					
+					updateWatchBtn.setOnMouseClicked((event)->{
+					AlertError("You must select a watch from the table first!");
+					});
+					
+					deleteWatchBtn.setOnMouseClicked((event)->{
+					AlertError("You must select a watch from the table first!");
 					});
 				}
 			}
@@ -314,7 +328,7 @@ public class ManageProductForm extends Application {
 		info.setContentText(content);
 		info.show();
 	}
-
+	
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {	
@@ -329,3 +343,5 @@ public class ManageProductForm extends Application {
 	}
 
 }
+
+
