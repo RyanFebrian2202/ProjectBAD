@@ -1,5 +1,8 @@
 package main;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -19,8 +22,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import model.User;
 
-public class LoginForm extends Application {
+public class LoginForm{
+	
+	private static LoginForm instance;
+	private static User user;
 	
 	Scene scene;
 	Background bgL, bgL1, bgL2;
@@ -33,76 +40,86 @@ public class LoginForm extends Application {
 	TextField emailTextField;
 	PasswordField pwLoginPF;
 	Button LoginBtn, RegisInsteadBtn;
+	Database db = Database.getConnection();
 	
+	public static LoginForm getInstance() {
+		if (instance == null) {
+			instance = new LoginForm();
+		}
+		return instance;
+	}
 	
-public void init() {
+	public static User getUser() {
+		return user;
+	}
 	
-	// buat kotak putihny
-	bfL = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
-	bfL1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
-	bfL2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
-	bgL2 = new Background(bfL2);
-	bgL = new Background(bfL);
-	bgL1 = new Background(bfL1);
+	public static void setUser(User inputUser) {
+		 user = inputUser;
+	}
 	
-	// std
-	grid = new GridPane();
-	border = new BorderPane();
+	public void init() {
 	
-	
-	// label
-	TitleLogin = new Label("Watches Dealer Login");
-	TitleLogin.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-	emailLogin = new Label("Email :");
-	pwLogin = new Label("Password :");
-	emailTextField = new TextField();
-	emailTextField.setPromptText("Email Address");
-	pwLoginPF = new PasswordField();
-	pwLoginPF.setPromptText("Password");
-	
-	//button
-	LoginBtn = new Button("Login");
-	LoginBtn.setMinWidth(200);
-	LoginBtn.setBackground(bgL1);
-	LoginBtn.setTextFill(Color.WHITE);
-	RegisInsteadBtn = new Button("Register Instead");
-	RegisInsteadBtn.setMinWidth(200);
-	RegisInsteadBtn.setBackground(bgL1);
-	RegisInsteadBtn.setTextFill(Color.WHITE);
-	
-	//posisi grid
-	grid.add(TitleLogin, 0, 0);
-	grid.add(emailLogin, 0, 1);
-	grid.add(emailTextField, 0, 2);
-	grid.add(pwLogin, 0, 3);
-	grid.add(pwLoginPF, 0, 4);
-	grid.add(LoginBtn, 0, 5);
-	grid.add(RegisInsteadBtn, 0, 6);
-	
-	// posisi
-	grid.setAlignment(Pos.CENTER);
-	grid.setVgap(20);
-	grid.setHgap(20);	
-	GridPane.setHalignment(TitleLogin, HPos.CENTER);
-	grid.setBackground(bgL2);
-	
-	BorderPane.setMargin(grid, new Insets(120));
-
-	border.setCenter(grid);
-	border.setBackground(bgL);
-	
-	scene = new Scene(border, 650, 600);
-}
-	
-
-	@Override
-	public void start(Stage stage) throws Exception {
-		init();		
-		stage.setTitle("Login");
-		scene.setFill(Color.PALETURQUOISE);
-		stage.setScene(scene);
-		stage.show();
+		// buat kotak putihny
+		bfL = new BackgroundFill(Color.PALETURQUOISE, CornerRadii.EMPTY, Insets.EMPTY);
+		bfL1 = new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY);
+		bfL2 = new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY);
+		bgL2 = new Background(bfL2);
+		bgL = new Background(bfL);
+		bgL1 = new Background(bfL1);
 		
+		// std
+		grid = new GridPane();
+		border = new BorderPane();
+		
+		
+		// label
+		TitleLogin = new Label("Watches Dealer Login");
+		TitleLogin.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+		emailLogin = new Label("Email :");
+		pwLogin = new Label("Password :");
+		emailTextField = new TextField();
+		emailTextField.setPromptText("Email Address");
+		pwLoginPF = new PasswordField();
+		pwLoginPF.setPromptText("Password");
+		
+		//button
+		LoginBtn = new Button("Login");
+		LoginBtn.setMinWidth(200);
+		LoginBtn.setBackground(bgL1);
+		LoginBtn.setTextFill(Color.WHITE);
+		RegisInsteadBtn = new Button("Register Instead");
+		RegisInsteadBtn.setMinWidth(200);
+		RegisInsteadBtn.setBackground(bgL1);
+		RegisInsteadBtn.setTextFill(Color.WHITE);
+		
+		//posisi grid
+		grid.add(TitleLogin, 0, 0);
+		grid.add(emailLogin, 0, 1);
+		grid.add(emailTextField, 0, 2);
+		grid.add(pwLogin, 0, 3);
+		grid.add(pwLoginPF, 0, 4);
+		grid.add(LoginBtn, 0, 5);
+		grid.add(RegisInsteadBtn, 0, 6);
+		
+		// posisi
+		grid.setAlignment(Pos.CENTER);
+		grid.setVgap(20);
+		grid.setHgap(20);	
+		GridPane.setHalignment(TitleLogin, HPos.CENTER);
+		grid.setBackground(bgL2);
+		
+		BorderPane.setMargin(grid, new Insets(120));
+	
+		border.setCenter(grid);
+		border.setBackground(bgL);
+		
+		scene = new Scene(border, 650, 600);
+	}
+	
+
+	public void showLogin(){
+		init();		
+		scene.setFill(Color.PALETURQUOISE);
 		
 		RegisInsteadBtn.setOnAction( (event) -> {
 			System.out.println("Pindah ke border Regis");
@@ -110,23 +127,44 @@ public void init() {
 		});
     	
     	LoginBtn.setOnAction( (event1) -> {
-    		System.out.println("Masuk APK");
-    	});
-		
-		LoginBtn.setOnAction(event -> {
+    		
 			if (emailTextField.getText().isEmpty()) {
 				showErrorAlert("Email field must be filled.");
 			} else if (pwLoginPF.getText().isEmpty()) {
 				showErrorAlert("Password field must be filled.");
-			} 
-//        else {
-//            // Check email + password match database
-//            boolean loginSuccessful = checkData
-//    }
-			
-			
-		});
+			} else {
+	    		String query = String.format("SELECT * FROM `user` WHERE UserEmail = '%s' AND UserPassword = '%s'", emailTextField.getText(),pwLoginPF.getText());
+	    		ResultSet rs = db.executeQuery(query);
+	    		
+	    		try {
+					while (rs.next()) {
+						int userID = rs.getInt("UserID");
+						String userName = rs.getString("UserName");
+						String userEmail = rs.getString("UserEmail");
+						String userPassword = rs.getString("UserPassword");
+						String userGender = rs.getString("UserGender");
+						String userRole = rs.getString("UserRole");
+						
+						user = new User(userID, userName, userEmail, userPassword, userGender, userRole);
+						
+						if(userRole.equals("Customer")) {
+							CustomerMain cm = CustomerMain.getInstance();
+							cm.showCustomerPage();
+						} else if(userRole.equals("Admin")) {
+							AdminMain am = AdminMain.getInsance();
+							am.showPage();
+						}
+					}
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+    	});
+    	
 		
+		Main.changeScene(scene, "Login Form");
 		
 		// Add Regis class ke stack pane
 //		Regis otherClass = new Regis();
@@ -140,9 +178,5 @@ public void init() {
         alert.setHeaderText("Error");
         alert.setContentText("Invalid credential!");
         alert.showAndWait();		
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

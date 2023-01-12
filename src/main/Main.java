@@ -21,6 +21,9 @@ public class Main extends Application{
 		MainStage startStage = MainStage.getInstance();
 		startStage.setStage(primaryStage);
 		
+		LoginForm lf = LoginForm.getInstance();
+		lf.showLogin();
+		
 		startStage.show();
 	}
 

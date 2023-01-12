@@ -25,16 +25,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.Window;
 //import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Cart;
 import model.Watch;
 
-public class ManageBrandForm extends Application{
+public class ManageBrandForm{
 	
 	private static ManageBrandForm instance;
 	
-	Scene scene;
+//	Scene scene;
 	BorderPane bPane;
 	GridPane gPane;
 	FlowPane fPane;
@@ -45,7 +46,7 @@ public class ManageBrandForm extends Application{
 	ScrollPane scrollPane;
 	Database db = Database.getConnection();
 	TableView<Brand> brandTable;
-//	Window windowBrand;
+	Window windowBrand;
 	
 	Vector<Brand> brandList = new Vector<Brand>();
 	
@@ -76,14 +77,10 @@ public class ManageBrandForm extends Application{
 		
 		scrollPane = new ScrollPane();
 		
-<<<<<<< HEAD
 		windowBrand = new Window("Manage Brand");
 		windowBrand.getContentPane().getChildren().add(bPane);
-=======
-//		windowBrand = new Window("Manage Brand");
->>>>>>> 99c4fb5e1e2838f715a3cba7862af11dd397421b
 		
-		scene = new Scene(bPane, 450, 550);
+//		scene = new Scene(bPane, 450, 550);
 	}
 	
 	public void arrangeComponent() {
@@ -179,10 +176,6 @@ public class ManageBrandForm extends Application{
 			}
 		});
 	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
 	public Window getWindow() {
 		initialize();
@@ -193,16 +186,15 @@ public class ManageBrandForm extends Application{
 		
 		return windowBrand;
 	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {	
-		initialize();
-		arrangeComponent();
-		refreshTable();
-		addBrand();
-		editTable();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Manage Brand");
-		primaryStage.show();
-	}
+//
+//	public void test() {	
+//		initialize();
+//		arrangeComponent();
+//		refreshTable();
+//		addBrand();
+//		editTable();
+//		primaryStage.setScene(scene);
+//		primaryStage.setTitle("Manage Brand");
+//		primaryStage.show();
+//	}
 }

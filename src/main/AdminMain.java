@@ -9,16 +9,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 
-public class AdminMain extends Application{
+public class AdminMain{
 
-	Scene scene;
+	private static AdminMain instance;
 	
+	Scene scene;
 	BorderPane bPane;
 	
 	MenuBar menuBar;
 	Menu userMenu, managementMenu;
 	MenuItem logOutMI, manageProductMI, manageBrandMI; 
 	
+	public static AdminMain getInsance() {
+		if (instance == null) {
+			instance = new AdminMain();
+		}
+		return instance;
+	}
 	
 	public void initialize() {
 		bPane = new BorderPane();
@@ -53,10 +60,6 @@ public class AdminMain extends Application{
 		
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 	public void showPage() {
 		initialize();
 		
@@ -65,7 +68,6 @@ public class AdminMain extends Application{
 			bPane.setCenter(mbf.getWindow());
 		});
 		
-<<<<<<< HEAD
 //		manageProductMI.setOnAction((event) -> {
 //			System.out.println("Masuk ke manage product tpi masih di dlaam main form");
 //			ManageProductForm mpf = new ManageProductForm();
@@ -87,13 +89,13 @@ public class AdminMain extends Application{
 //				e.printStackTrace();
 //			}
 //		});
-=======
-		logOutMI.setOnAction((event) -> {
-			System.out.println("Balik ke Login");
-			
-		});
->>>>>>> 99c4fb5e1e2838f715a3cba7862af11dd397421b
 		
-		Main.changeScene(scene, "Manage Admin");
+		logOutMI.setOnAction((event) -> {
+			LoginForm.setUser(null);
+			LoginForm lf = LoginForm.getInstance();
+			lf.showLogin();
+		});
+		
+		Main.changeScene(scene, "Admin Main");
 	}
 }
