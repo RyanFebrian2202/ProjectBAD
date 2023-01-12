@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.Vector;
 
 import javafx.application.Application;
@@ -139,7 +140,8 @@ public class BuyProductForm extends Application{
 			}
 			rs.close();
 			
-			rs = db.executeQuery("SELECT * FROM `cart`");
+			query = String.format("SELECT * FROM `cart` WHERE UserID = %d", LoginForm.getUser().getUserID());
+			rs = db.executeQuery(query);
 			while(rs.next()) {
 				int watchid = rs.getInt("WatchID");
 				int customerid = rs.getInt("UserID");
