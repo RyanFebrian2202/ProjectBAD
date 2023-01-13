@@ -2,7 +2,7 @@ package model;
 
 public class DetailTransaction {
 	private int TransactionID, WatchID, Quantity;
-	private String WatchName, WatchBrand, WatchPrice, SubTotal;
+	private String WatchName, WatchBrand, SubTotal, WatchPrice;
 	
 	public DetailTransaction(int transactionID, int watchID, int quantity, String watchName, String watchBrand,
 			String watchPrice, String subTotal) {

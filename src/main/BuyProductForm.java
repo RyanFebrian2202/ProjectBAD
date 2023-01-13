@@ -4,8 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import javafx.application.Application;
@@ -32,6 +35,7 @@ import javafx.stage.Stage;
 import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.Cart;
+import model.User;
 import model.Watch;
 
 public class BuyProductForm{
@@ -138,6 +142,7 @@ public class BuyProductForm{
 				int watchstock = rs.getInt("WatchStock");
 				
 				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
+				
 				ResultSet rsb = db.executeQuery2(querybrand);
 //				PreparedStatement ps = db.prepareStatement(querybrand);
 //				ResultSet rs2 = ps.executeQuery();
@@ -311,13 +316,26 @@ public class BuyProductForm{
 	public void Checkout() {
 		System.out.println(watchId);
 		System.out.println();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
-		LocalDate now = LocalDate.now();
-		System.out.println(now);
-		String query = String.format("INSERT INTO `headertransaction` " + "(`UserID`, `TransactionDate`) " + "VALUES ('%d','%s')"
-				, 0, now);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date now = new Date();
+		now = Calendar.getInstance().getTime();
+		sdf.format(now);
+		java.sql.Date sqlDate = new java.sql.Date(now.getTime());
+//		System.out.println(now);
+		
+		String query = "INSERT INTO `headertransaction` (`UserID`, `TransactionDate`) VALUES (?,?)";
+		PreparedStatement ps = db.prepareStatement(query);
+		try {
+			ps.setInt(1, LoginForm.getUser().getUserID());
+			ps.setDate(2, sqlDate);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 				
-		db.executeUpdate(query);
+//		db.executeUpdate(query);
 				
 		System.out.println();
 //		String query1 = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"

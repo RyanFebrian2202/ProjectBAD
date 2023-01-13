@@ -288,6 +288,7 @@ public class ManageProductForm {
 						}
 					}
 					
+						
 					updateWatchBtn.setOnMouseClicked((event)->{
 						String brandName = watchBrandCBX.getValue();
 						brandList.clear();
@@ -307,7 +308,7 @@ public class ManageProductForm {
 						AlertInformation("Watch successfully updated!");
 						refreshTable();
 					});
-					
+						
 					deleteWatchBtn.setOnMouseClicked((event)->{
 						String query = String.format("DELETE FROM `watch` WHERE `WatchID` = %d", newValue.getWatchID());
 						db.executeUpdate(query);
@@ -318,9 +319,9 @@ public class ManageProductForm {
 						AlertInformation("Watch successfully deleted!");
 						refreshTable();
 					});
-				
-				} 	
-			}
+						
+				}		
+			} 	
 		});
 	}
 	

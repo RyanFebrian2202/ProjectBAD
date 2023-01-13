@@ -65,8 +65,8 @@ public class CustomerMain{
 		});
 		
 		myTransactionHistoryMI.setOnAction((event) -> {
-			ViewTransactionHistoryForm hf = ViewTransactionHistoryForm.getInstance();
-			bPane.setCenter(hf.getTransactionHistoryWindow());
+			TransactionHistoryForm thf = TransactionHistoryForm.getInstance();
+			bPane.setCenter(thf.getTransactionHistoryWindow());
 		});
 		
 		logOutMI.setOnAction((event)->{
