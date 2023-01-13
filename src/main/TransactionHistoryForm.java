@@ -97,14 +97,6 @@ public class TransactionHistoryForm {
 		tableView1.setMinHeight(250);
 		tableView1.setMaxHeight(250);	
 
-
-//		tableView1.getItems().add(new TransactionHistory(1, 2, "2022-05-25"));
-//		tableView1.getItems().add(new TransactionHistory(2, 2, "2022-05-25"));
-//		tableView1.getItems().add(new TransactionHistory(3, 2, "2022-05-25"));
-//		tableView1.getItems().add(new TransactionHistory(4, 2, "2022-05-28"));
-//		tableView1.getItems().add(new TransactionHistory(5, 2, "2022-05-28"));
-//		tableView1.getItems().add(new TransactionHistory(6, 2, "2022-05-28"));
-
 		VBox vbox = new VBox(tableView1);
 		vbox.setPadding(new Insets(10, 10, 10, 10));
 		
@@ -152,9 +144,6 @@ public class TransactionHistoryForm {
 		tableView2.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView2.setPadding(new Insets(10, 10, 10, 10));
 
-
-		
-		
 		// Atur layout utama
 		bPane.setTop(tableView1);
 		bPane.setAlignment(tableView1, Pos.CENTER);
