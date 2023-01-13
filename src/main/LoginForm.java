@@ -1,5 +1,6 @@
 package main;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -113,7 +114,7 @@ public class LoginForm{
 		border.setCenter(grid);
 		border.setBackground(bgL);
 		
-		scene = new Scene(border, 650, 600);
+		scene = new Scene(border, 500, 600);
 	}
 	
 
@@ -122,8 +123,8 @@ public class LoginForm{
 		scene.setFill(Color.PALETURQUOISE);
 		
 		RegisInsteadBtn.setOnAction( (event) -> {
-			System.out.println("Pindah ke border Regis");
-//			border.setCenter(Regis);
+			RegisterForm rf = RegisterForm.getInstance();
+			rf.showRegisterForm();
 		});
     	
     	LoginBtn.setOnAction( (event1) -> {
@@ -134,6 +135,17 @@ public class LoginForm{
 				showErrorAlert("Password field must be filled.");
 			} else {
 	    		String query = String.format("SELECT * FROM `user` WHERE UserEmail = '%s' AND UserPassword = '%s'", emailTextField.getText(),pwLoginPF.getText());
+	    		
+//	    		PreparedStatement ps = db.prepareStatement(query);
+//	    		try {
+//					ps.setString(1, emailTextField.getText());
+//					ps.setString(2, pwLoginPF.getText());
+//					ResultSet rs = ps.executeQuery();
+//				} catch (SQLException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+	    		
 	    		ResultSet rs = db.executeQuery(query);
 	    		
 	    		try {

@@ -51,26 +51,22 @@ public class CustomerMain{
 		
 		
 		bPane.setTop(menuBar);
-		scene = new Scene(bPane,600,600);
-		
-		logOutMI.setOnAction((event) -> {
-			System.out.println("Balik ke Login");
-		});
+		scene = new Scene(bPane,750,730);
 		
 //		BorderPane buyProductPage = new BuyProductForm();
-		
-		buyWatchMI.setOnAction((event) -> {
-			System.out.println("asd");
-//			bPane.setCenter(buyProductPage);
-			
-		});
 	}
 	
 	public void showCustomerPage() {
 		initialize();
 		
+		buyWatchMI.setOnAction((event)->{
+			BuyProductForm bpf = BuyProductForm.getInstance();
+			bPane.setCenter(bpf.getBuyWindow());
+		});
+		
 		myTransactionHistoryMI.setOnAction((event) -> {
-			System.out.println("Masuk ke manage brand tpi masih di dlaam main form");
+			ViewTransactionHistoryForm hf = ViewTransactionHistoryForm.getInstance();
+			bPane.setCenter(hf.getTransactionHistoryWindow());
 		});
 		
 		logOutMI.setOnAction((event)->{
