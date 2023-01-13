@@ -117,7 +117,7 @@ public class TransactionHistoryForm {
 		column5.setCellValueFactory(new PropertyValueFactory<DetailTransaction, Integer>("WatchID"));
 		
 		TableColumn<DetailTransaction, String> column6 = new TableColumn<DetailTransaction, String>("Watch Name");
-		column6.setMinWidth(143);
+		column6.setMinWidth(170);
 		column6.setCellValueFactory(new PropertyValueFactory<DetailTransaction, String>("WatchName"));
 		
 		TableColumn<DetailTransaction, String> column7 = new TableColumn<DetailTransaction, String>("Watch Brand");
