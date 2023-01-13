@@ -37,12 +37,7 @@ import model.Cart;
 import model.Watch;
 
 public class ManageBrandForm{
-//	__________________________________
-//	Tinggal buat dia keliatan sampe bwah, soalnya masih kepotong -vincent
-//	
-//	
-//	
-//	
+
 	private static ManageBrandForm instance;
 	
 //	Scene scene;

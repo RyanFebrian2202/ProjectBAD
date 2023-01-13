@@ -37,12 +37,7 @@ import model.Watch;
 public class BuyProductForm{
 	
 	private static BuyProductForm instance;
-	
-	
-//	______________________________________________________________________________________________
-//	KEKNYA SEMUA PAGE DI DALEM MENU BAR, HARUS DIBUAT BORDER PANE DAH SOALNYA ERROR ERROR, TPI BISA JALAN.
-//	RUN AJA COBA
-//	- Vincent
+
 
 	Scene scene;
 	BorderPane bPane1, bPanequan;
