@@ -212,6 +212,7 @@ public class ManageBrandForm{
 					deleteBrandBtn.setOnMouseClicked((event)->{
 						String query = String.format("DELETE FROM `brand` WHERE `BrandID` = %d", newValue.getBrandID());
 						db.executeUpdate(query);
+						brandNameTF.setText("");
 						refreshTable();
 						
 						Alert info = new Alert(AlertType.INFORMATION);

@@ -89,6 +89,7 @@ public class ManageProductForm {
 	
 	public void initialize() {
 		
+		brandList.clear();
 		getBrandData();
 		
 		bPane = new BorderPane();
