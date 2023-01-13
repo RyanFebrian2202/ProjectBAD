@@ -29,21 +29,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
-import javafx.stage.Window;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Cart;
 import model.Watch;
-//import jfxtras.labs.scene.control.window.CloseIcon;
 
-public class BuyProductForm extends Application{
+public class BuyProductForm{
+	
+	private static BuyProductForm instance;
 	
 	Scene scene;
 	BorderPane bPane1, bPanequan;
 	GridPane gPane;
 	FlowPane bottomBtn, QuanPane;
-//	jfxtras.labs.scene.control.window.Window buyproductWindow;
-
+	Window buyWindow;
 	
 	Label selectWatchLbl, quantityLbl, watchNameLbl;
 	Button addWatchToCartBtn, clearCartBtn, checkOutBtn;
@@ -56,6 +56,13 @@ public class BuyProductForm extends Application{
 	Database db = Database.getConnection();
 	
 	int watchId;
+	
+	public static BuyProductForm getInstance() {
+		if (instance == null) {
+			instance = new BuyProductForm();
+		}
+		return instance;
+	}
 	
 	public void setTableWatch() {
 		watchTable = new TableView<>();
@@ -214,7 +221,7 @@ public class BuyProductForm extends Application{
 		bottomBtn = new FlowPane();
 		QuanPane = new FlowPane();
 		
-//		buyproductWindow = new jfxtras.labs.scene.control.window.Window("Buy Product");
+		buyWindow = new Window("Buy Product");
 		
 		setTableWatch();
 		setTableCart();
@@ -270,8 +277,8 @@ public class BuyProductForm extends Application{
 		
 		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
 
-//		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
-//		buyproductWindow.getContentPane().getChildren().add(bPane1);
+		buyWindow.getRightIcons().add(new CloseIcon(buyWindow));
+		buyWindow.getContentPane().getChildren().add(bPane1);
 		
 		scene = new Scene(bPane1, 750, 700);
 		
@@ -310,21 +317,11 @@ public class BuyProductForm extends Application{
 //		db.executeUpdate(query1);
 	}
 		
-
-	
-	public static void main(String[] args) {
-		launch(args);
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void showBuyForm() {
 		init();
 		refreshTable();
 		selectTable();
 		addWatch();
-		primaryStage.setScene(scene);
-		primaryStage.show();
 		
 		clearCartBtn.setOnMouseClicked(e -> {
 			Alert conforclear = new Alert(AlertType.CONFIRMATION);
@@ -353,10 +350,7 @@ public class BuyProductForm extends Application{
 					refreshTable();
 					info.showAndWait();
 				}
-			
+			});
 		});
-		
-	});
-
 	}
 }

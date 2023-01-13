@@ -15,7 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableSelectionModel;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 //import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
@@ -78,6 +81,7 @@ public class ManageBrandForm{
 		scrollPane = new ScrollPane();
 		
 		windowBrand = new Window("Manage Brand");
+		windowBrand.getRightIcons().add(new CloseIcon(windowBrand));
 		windowBrand.getContentPane().getChildren().add(bPane);
 		
 //		scene = new Scene(bPane, 450, 550);
@@ -153,6 +157,12 @@ public class ManageBrandForm{
 	}
 	
 	public void editTable() {
+//		TableSelectionModel<Brand> tableSelectionModel = brandTable.getSelectionModel();
+//		tableSelectionModel.setSelectionMode(SelectionMode.SINGLE);
+//		Brand brand = tableSelectionModel.getSelectedItem();
+//		brandNameTF.setText(Integer.toString(brand.getBrandID()));
+//		brand.getBrandName();
+		
 		brandTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Brand>() {
 
 			@Override
