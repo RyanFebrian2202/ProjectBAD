@@ -326,7 +326,7 @@ public class BuyProductForm{
 //		db.executeUpdate(query1);
 	}
 		
-	public void showBuyForm() {
+	public Window getBuyWindow() {
 		init();
 		refreshTable();
 		selectTable();
@@ -365,5 +365,7 @@ public class BuyProductForm{
 				}
 			});
 		});
+		
+		return buyproductWindow;
 	}
 }

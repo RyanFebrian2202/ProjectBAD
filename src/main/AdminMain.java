@@ -50,14 +50,6 @@ public class AdminMain{
 		bPane.setTop(menuBar);
 		scene = new Scene(bPane,800,500);
 		
-		logOutMI.setOnAction((event) -> {
-			System.out.println("Balik ke Login");
-		});
-		
-		manageBrandMI.setOnAction((event) -> {
-			System.out.println("Masuk ke manage brand tpi masih di dlaam main form");
-		});
-		
 	}
 	
 	public void showPage() {
@@ -66,6 +58,11 @@ public class AdminMain{
 		manageBrandMI.setOnAction((event)->{
 			ManageBrandForm mbf = ManageBrandForm.getInstance();
 			bPane.setCenter(mbf.getWindow());
+		});
+		
+		manageProductMI.setOnAction((event)->{
+			ManageProductForm mpf = ManageProductForm.getInstance();
+			bPane.setCenter(mpf.showManageProductWindow());
 		});
 		
 //		manageProductMI.setOnAction((event) -> {

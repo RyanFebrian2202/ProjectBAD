@@ -123,8 +123,8 @@ public class LoginForm{
 		scene.setFill(Color.PALETURQUOISE);
 		
 		RegisInsteadBtn.setOnAction( (event) -> {
-			System.out.println("Pindah ke border Regis");
-//			border.setCenter(Regis);
+			RegisterForm rf = RegisterForm.getInstance();
+			rf.showRegisterForm();
 		});
     	
     	LoginBtn.setOnAction( (event1) -> {

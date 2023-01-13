@@ -15,11 +15,15 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Watch;
 
-public class ViewTransactionHistoryForm extends Application {
+public class ViewTransactionHistoryForm {
 	
-	Scene scene;
+	private static ViewTransactionHistoryForm instance;
+	
+//	Scene scene;
 	BorderPane bPane;
 	FlowPane fPane;
 	
@@ -28,12 +32,18 @@ public class ViewTransactionHistoryForm extends Application {
 	TableView<TransactionHistory> tableView1;
 	TableView<Watch> tableView2;
 	
+	Window transactionHistoryWindow;
+	
 	int quantity = 0;
 	int subTotal = 0;
 	int transactionId = 0;
 	
-	public static void main(String[] args) {
-		launch(args);
+	public static ViewTransactionHistoryForm getInstance() {
+		if(instance == null) {
+			instance = new ViewTransactionHistoryForm();
+		}
+		
+		return instance;
 	}
 
 	public void initialize() {
@@ -43,7 +53,10 @@ public class ViewTransactionHistoryForm extends Application {
 		
 		selectedTransactionLbl = new Label("Selected Transaction: None");
 		
-		scene = new Scene(bPane, 999, 700);
+//		scene = new Scene(bPane, 999, 700);
+		transactionHistoryWindow = new Window("Transaction History");
+		transactionHistoryWindow.getRightIcons().add(new CloseIcon(transactionHistoryWindow));
+		transactionHistoryWindow.getContentPane().getChildren().add(bPane);
 				
 	}
 	
@@ -146,16 +159,12 @@ public class ViewTransactionHistoryForm extends Application {
 		});
 	}
 	
-	
-	@Override
-	public void start(Stage primaryStage) throws Exception{
+	public Window getTransactionHistoryWindow(){
 		initialize();
 		arrangeComponent();
 		selectTable();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("View Transaction History");
-		primaryStage.show();
 		
+		return transactionHistoryWindow;
 	}
 
 }

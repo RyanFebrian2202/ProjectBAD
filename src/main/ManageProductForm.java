@@ -40,9 +40,11 @@ import model.Watch;
 //
 //
 //
-public class ManageProductForm extends Application {
+public class ManageProductForm {
 	
-	Scene scene;
+	private static ManageProductForm instance;
+	
+	//Scene scene;
 	BorderPane bPane;
 	GridPane gPane;
 	FlowPane fPane;
@@ -61,6 +63,14 @@ public class ManageProductForm extends Application {
 	
 	Boolean kondisi = false;
 	Window manageWindow;
+	
+	public static ManageProductForm getInstance() {
+		if (instance == null) {
+			instance = new ManageProductForm();
+		}
+		
+		return instance;
+	}
 	
 	public void getBrandData() {
 		String query = "SELECT * FROM `brand`";
@@ -132,9 +142,9 @@ public class ManageProductForm extends Application {
 		watchBrandCBX.getSelectionModel().select(0);
 		
 		manageWindow.getRightIcons().add(new CloseIcon(manageWindow));
-//		manageWindow.getContentPane().getChildren().add(bPane);
+		manageWindow.getContentPane().getChildren().add(bPane);
 		
-		scene = new Scene(bPane, 750, 550);
+		//scene = new Scene(bPane, 750, 550);
 	}
 	
 	public void arrangeComponent() {
@@ -314,10 +324,6 @@ public class ManageProductForm extends Application {
 		});
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
-	
 	public void AlertError(String content) {
 		Alert error = new Alert(AlertType.ERROR);
 		error.setHeaderText("Error");
@@ -333,16 +339,12 @@ public class ManageProductForm extends Application {
 	}
 	
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {	
+	public Window showManageProductWindow() {	
 		initialize();
 		arrangeComponent();
 		refreshTable();
 		addWatch();
 		editTable();
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Manage Product");
-		primaryStage.show();
 		
 		updateWatchBtn.setOnMouseClicked((event)->{
 			AlertError("You must select a watch from the table first!");
@@ -351,6 +353,8 @@ public class ManageProductForm extends Application {
 		deleteWatchBtn.setOnMouseClicked((event)->{
 			AlertError("You must select a watch from the table first!");
 		});
+		
+		return manageWindow;
 	}
 }
 

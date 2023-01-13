@@ -25,7 +25,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
-public class RegisterForm extends Application{
+public class RegisterForm {
+	private static RegisterForm instance;
+	
 	String gendervalue, roledefault;
 	Scene scene;
 	GridPane grid1;
@@ -41,6 +43,14 @@ public class RegisterForm extends Application{
 	Button RegisBtn, BackBtn;
 	HBox HBX;
 	Database db = Database.getConnection();
+	
+	public static RegisterForm getInstance() {
+		if(instance == null) {
+			instance = new RegisterForm();
+		}
+		
+		return instance;
+	}
 	
 	public void init() {
 		
@@ -160,7 +170,7 @@ public class RegisterForm extends Application{
 				  alert0.showAndWait();
 				  
 				}else if (pick == null) {
-					// Gender must be chosen, either “Male” or “Female”.
+					// Gender must be chosen, either â€œMaleâ€� or â€œFemaleâ€�.
 					  Alert alert1 = new Alert(AlertType.ERROR, "Please select a gender!");
 					  alert1.showAndWait();
 				}else if (!email.matches(pattern)) {
@@ -168,19 +178,19 @@ public class RegisterForm extends Application{
 					  Alert alert2 = new Alert(AlertType.ERROR, "Please enter a valid email address!");
 					  alert2.showAndWait();
 				}else if (email.contains("@.") || email.contains("..")) {
-					// Character ‘@’ must not be next to ‘.’.
-						  Alert alert3 = new Alert(AlertType.ERROR, "Character ‘@’ must not be next to ‘.’!");
+					// Character â€˜@â€™ must not be next to â€˜.â€™.
+						  Alert alert3 = new Alert(AlertType.ERROR, "Character â€˜@â€™ must not be next to â€˜.â€™!");
 						  alert3.showAndWait();
 				}else if (email.startsWith("@") || email.startsWith(".") || email.endsWith("@") || email.endsWith(".")) {
-//					Must not starts and ends with ‘@’ nor ‘.’.
+//					Must not starts and ends with â€˜@â€™ nor â€˜.â€™.
 					  Alert alert4 = new Alert(AlertType.ERROR, "Email must not start or end with '@' or '.'!");
 					  alert4.showAndWait();
 				}else if (atCount != 1) {
-//					Must contain exactly one ‘@’.
+//					Must contain exactly one â€˜@â€™.
 					  Alert alert5 = new Alert(AlertType.ERROR, "Email must contain exactly one '@' symbol!");
 					  alert5.showAndWait();
 				}else if (!email.endsWith(".com")) {
-//					Must ends with ‘.com’
+//					Must ends with â€˜.comâ€™
 					  Alert alert7 = new Alert(AlertType.ERROR, "Email must end with '.com'!");
 					  alert7.showAndWait();
 				}else if (password.length() < 6 || password.length() > 20) {
@@ -206,9 +216,11 @@ public class RegisterForm extends Application{
 					Alert alertsucess = new Alert(AlertType.INFORMATION, "Register successful!");
 					alertsucess.showAndWait();
 					
+					LoginForm lf = LoginForm.getInstance();
+					lf.showLogin();
 				}
 
-				// Must contain exactly one ‘.’ after ‘@’ for separating [provider] and “com”.
+				// Must contain exactly one â€˜.â€™ after â€˜@â€™ for separating [provider] and â€œcomâ€�.
 //				int dotCount = email.substring(email.indexOf("@")) - email.substring(email.indexOf("@")).replace(".", "").length();
 //				if (dotCount != 1) {
 //				  Alert alert6 = new Alert(AlertType.ERROR, "Email must contain exactly one '.' symbol after the '@' symbol!");
@@ -223,23 +235,20 @@ public class RegisterForm extends Application{
 		
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	
-
-	@Override
-	public void start(Stage stage) throws Exception {
+	public void showRegisterForm(){
 		init();
-		stage.setTitle("Register");
 		scene.setFill(Color.PALETURQUOISE);
-		stage.setScene(scene);
-		stage.show();
+		
+		BackBtn.setOnMouseClicked((event)->{
+			LoginForm lf = LoginForm.getInstance();
+			lf.showLogin();
+		});
 		
 		RegisBtn.setOnMouseClicked(e -> {
 			valid();
 		});
+		
+		Main.changeScene(scene, "Register Form");
 	}
 
 }
