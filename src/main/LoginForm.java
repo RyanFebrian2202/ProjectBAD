@@ -149,7 +149,7 @@ public class LoginForm{
 	    		ResultSet rs = db.executeQuery(query);
 	    		
 	    		try {
-					while (rs.next()) {
+					if(rs.next()) {
 						int userID = rs.getInt("UserID");
 						String userName = rs.getString("UserName");
 						String userEmail = rs.getString("UserEmail");
@@ -166,11 +166,13 @@ public class LoginForm{
 							AdminMain am = AdminMain.getInsance();
 							am.showPage();
 						}
+					} else {
+						showErrorAlert("Invalid Credential");
 					}
 					rs.close();
-				} catch (SQLException e) {
+				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
 			}
     	});

@@ -61,6 +61,7 @@ public class BuyProductForm{
 	Database db = Database.getConnection();
 	
 	int watchId;
+	int userID = LoginForm.getUser().getUserID();
 	
 	public static BuyProductForm getInstance() {
 		if (instance == null) {
@@ -123,100 +124,7 @@ public class BuyProductForm{
 		cartTable.getColumns().addAll(col1,col2,col3);
 	}
 	
-	public void getData() {
-		String query = "SELECT * FROM `watch`";
-		ResultSet rs = db.executeQuery(query);
-		
-		
-		try {
-			while(rs.next()) {
-				int watchid = rs.getInt("WatchID");
-				String watchname = rs.getString("WatchName");
-				int watchbrandID = rs.getInt("BrandID");
-				int watchprice = rs.getInt("WatchPrice");
-				int watchstock = rs.getInt("WatchStock");
-				
-				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
-				
-				ResultSet rsb = db.executeQuery2(querybrand);
-//				PreparedStatement ps = db.prepareStatement(querybrand);
-//				ResultSet rs2 = ps.executeQuery();
-//				String test = rs2.getString("brandName");
-//				System.out.println(test);
-				String watchbrand = "";
-				if(rsb.next()) {
-					watchbrand = rsb.getString("brandName");					
-				}
-				System.out.println(watchbrand);
-				
-				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
-				watchlist.add(watch);
-				rsb.close();
-			}
-			rs.close();
-			
-			rs = db.executeQuery("SELECT * FROM `cart`");
-			while(rs.next()) {
-				int watchid = rs.getInt("WatchID");
-				int customerid = rs.getInt("UserID");
-				int quantity = rs.getInt("Quantity");
-				
-				Cart cart = new Cart(customerid,watchid,quantity);
-				cartlist.add(cart);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void selectTable() {
-		watchTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Watch>() {
-
-			@Override
-			public void changed(ObservableValue<? extends Watch> observable, Watch oldValue, Watch newValue) {
-				// TODO Auto-generated method stub
-				if (newValue != null) {
-					selectWatchLbl.setText("Selected Watch: " + newValue.getWatchName());
-					
-					watchId = newValue.getWatchID();
-				}
-			}
-		});
-	}
-	
-	public void refreshTable() {
-		watchlist.clear();
-		cartlist.clear();
-		getData();
-		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchlist);
-		watchTable.setItems(watchObs);
-		ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
-		cartTable.setItems(cartObs);
-//		System.out.println(watchlist.get(1).getWatchID());
-	}
-	
-	public void addWatch() {
-		addWatchToCartBtn.setOnMouseClicked((event)->{
-			if (watchId < 1) {
-				AlertError("You must select the product!");
-			}else if (quantitySp.getValue() == 0) {
-				AlertError("You must input quantity more than 0!");
-			}else {
-				
-				Cart cart = new Cart(1,watchId,quantitySp.getValue());
-				cartlist.add(cart);
-				ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
-				cartTable.setItems(cartObs);
-			}
-			
-//			String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",1,watchId,quantitySp.getValue());
-//			db.executeUpdate(query);
-		});
-	}
-	
-	public void init() {
+public void init() {
 		
 		
 		bPane1 = new BorderPane();
@@ -293,6 +201,96 @@ public class BuyProductForm{
 		
 	}
 	
+	public void getData() {
+		String query = "SELECT * FROM `watch`";
+		ResultSet rs = db.executeQuery(query);
+		
+		
+		try {
+			while(rs.next()) {
+				int watchid = rs.getInt("WatchID");
+				String watchname = rs.getString("WatchName");
+				int watchbrandID = rs.getInt("BrandID");
+				int watchprice = rs.getInt("WatchPrice");
+				int watchstock = rs.getInt("WatchStock");
+				
+				String querybrand = "SELECT * FROM `brand` WHERE BrandID = " + watchbrandID;
+				
+				ResultSet rsb = db.executeQuery2(querybrand);
+//				PreparedStatement ps = db.prepareStatement(querybrand);
+//				ResultSet rs2 = ps.executeQuery();
+//				String test = rs2.getString("brandName");
+//				System.out.println(test);
+				String watchbrand = "";
+				if(rsb.next()) {
+					watchbrand = rsb.getString("brandName");					
+				}
+				System.out.println(watchbrand);
+				
+				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
+				watchlist.add(watch);
+				rsb.close();
+			}
+			rs.close();
+			
+			rs = db.executeQuery("SELECT * FROM `cart` WHERE UserID = " + userID);
+			while(rs.next()) {
+				int watchid = rs.getInt("WatchID");
+				int quantity = rs.getInt("Quantity");
+				
+				Cart cart = new Cart(userID,watchid,quantity);
+				cartlist.add(cart);
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void selectTable() {
+		watchTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Watch>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Watch> observable, Watch oldValue, Watch newValue) {
+				// TODO Auto-generated method stub
+				if (newValue != null) {
+					selectWatchLbl.setText("Selected Watch: " + newValue.getWatchName());
+					
+					watchId = newValue.getWatchID();
+				}
+			}
+		});
+	}
+	
+	public void refreshTable() {
+		watchlist.clear();
+		cartlist.clear();
+		getData();
+		ObservableList<Watch> watchObs = FXCollections.observableArrayList(watchlist);
+		watchTable.setItems(watchObs);
+		ObservableList<Cart> cartObs = FXCollections.observableArrayList(cartlist);
+		cartTable.setItems(cartObs);
+//		System.out.println(watchlist.get(1).getWatchID());
+	}
+	
+	public void addWatch() {
+		addWatchToCartBtn.setOnMouseClicked((event)->{
+			if (watchId < 1) {
+				AlertError("You must select the product!");
+			}else if (quantitySp.getValue() == 0) {
+				AlertError("You must input quantity more than 0!");
+			}else {
+				String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",userID,watchId,quantitySp.getValue());
+				db.executeUpdate(query);
+				quantitySp.getValueFactory().setValue(0);
+				refreshTable();
+			}
+		});
+	}
+	
+	
+	
 	public void AlertInformation(String content) {
 		Alert info = new Alert(AlertType.INFORMATION);
 		info.setHeaderText("Message");
@@ -325,18 +323,34 @@ public class BuyProductForm{
 			ps.setInt(1, LoginForm.getUser().getUserID());
 			ps.setDate(2, sqlDate);
 			ps.executeUpdate();
+			ps.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
-//		db.executeUpdate(query);
-				
+		
+		int transactionID = 0;
+		String transactionQuery = String.format("SELECT TransactionID FROM `headertransaction` WHERE UserID = %d ORDER BY TransactionID DESC LIMIT 1",userID);
+		ResultSet rs = db.executeQuery(transactionQuery);
+		try {
+			while(rs.next()){
+				transactionID = rs.getInt("TransactionID");
+			}
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println();
-//		String query1 = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
-//				, 0, 0, password, gendervalue, roledefault);
-						
-//		db.executeUpdate(query1);
+		
+		for(int i = 0; i<cartlist.size();i++) {
+			
+			String queryDetail = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')",transactionID,cartlist.get(i).getWatchID(),cartlist.get(i).getQuantity() );
+			db.executeUpdate(queryDetail);
+		}
+		
+		String queryDelete = "DELETE FROM `cart` WHERE UserID = " + userID;
+		db.executeUpdate(queryDelete);
 	}
 		
 	public Window getBuyWindow() {
@@ -350,7 +364,8 @@ public class BuyProductForm{
 			conforclear.setContentText("Are you sure to clear cart?");
 			conforclear.showAndWait().ifPresent(respone -> {
 				if (respone == ButtonType.OK) {
-					cartlist.clear();
+					String queryDelete = "DELETE FROM `cart` WHERE UserID = " + userID;
+					db.executeUpdate(queryDelete);
 					refreshTable();
 				}
 			});
@@ -369,10 +384,7 @@ public class BuyProductForm{
 //					Masukin data cart ke transaction
 					Checkout();
 					
-					
-					
 //					hapus cart
-					cartlist.clear();
 					refreshTable();
 					info.showAndWait();
 				}
