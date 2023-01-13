@@ -274,6 +274,7 @@ public void init() {
 				String query = String.format("INSERT INTO `cart`(`UserID`, `WatchID`, `Quantity`) VALUES ('%d','%d','%d')",userID,watchId,quantitySp.getValue());
 				db.executeUpdate(query);
 				quantitySp.getValueFactory().setValue(0);
+				selectWatchLbl.setText("Selected Watch: None");
 				refreshTable();
 			}
 		});
