@@ -46,8 +46,7 @@ public class BuyProductForm{
 	Scene scene;
 	BorderPane bPane1, bPanequan;
 	GridPane gPane;
-	FlowPane bottomBtn, QuanPane;
-	Window buyWindow;
+	FlowPane bottomBtn;
 	Window buyproductWindow;
 	
 	Label selectWatchLbl, quantityLbl, watchNameLbl;
@@ -85,14 +84,15 @@ public class BuyProductForm{
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		col5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
-		watchTable.setMaxSize(673, 250);
-		
+		watchTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);	
+		watchTable.setMaxHeight(250);
+		watchTable.setMinHeight(250);
 //		set minimal ukuran kolom
-		col1.setMinWidth(80);
-		col2.setMinWidth(200);
-		col3.setMinWidth(123);
-		col4.setMinWidth(122);
-		col5.setMinWidth(122);
+		col1.setMinWidth(999/5);
+		col2.setMinWidth(999/5);
+		col3.setMinWidth(999/5);
+		col4.setMinWidth(999/5);
+		col5.setMinWidth(999/5);
 		
 		//add ke table pakai colom
 		watchTable.getColumns().addAll(col1, col2, col3, col4, col5);
@@ -108,17 +108,21 @@ public class BuyProductForm{
 		cartlist = new Vector<>();
 		TableColumn<Cart, Integer> col1 = new TableColumn<Cart, Integer>("User ID");
 		TableColumn<Cart, Integer> col2 = new TableColumn<Cart, Integer>("Watch ID");
-		TableColumn<Cart, Integer>col3 = new TableColumn<Cart, Integer>("Quantity");
+		TableColumn<Cart, Integer> col3 = new TableColumn<Cart, Integer>("Quantity");
 
 		
 		col1.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("UserID"));
 		col2.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("WatchID"));
 		col3.setCellValueFactory(new PropertyValueFactory<Cart, Integer>("Quantity"));
 		
-		cartTable.setMaxSize(650, 250);
-		col1.setMinWidth(650/3);
-		col2.setMinWidth(650/3);
-		col3.setMinWidth(650/3);
+//		cartTable.setMaxSize(650, 250);
+		cartTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		col1.setMinWidth(999/3);
+		col2.setMinWidth(999/3);
+		col3.setMinWidth(999/3);
+		
+		cartTable.setMaxHeight(250);
+		cartTable.setMinHeight(250);
 		
 		//add ke table pakai colom
 		cartTable.getColumns().addAll(col1,col2,col3);
@@ -132,36 +136,22 @@ public void init() {
 		
 		gPane = new GridPane();
 		bottomBtn = new FlowPane();
-		QuanPane = new FlowPane();
-		
-		buyWindow = new Window("Buy Product");
+
 		buyproductWindow = new Window("Buy Product");
 		
 		setTableWatch();
 		setTableCart();
-		
-		
-		
-//		watch namenya nanti ganti ke get text		
+				
 		selectWatchLbl = new Label("Selected Watch: None");
-//		bPanequan.setTop(selectWatchLbl);
+
 		
 		quantityLbl = new Label("Quantity: ");
-//		bPanequan.setCenter(quantityLbl);
-		QuanPane.getChildren().add(quantityLbl);
-//		gPane.add(quantityLbl, 0, 0);
-		
+
 		quantitySp = new Spinner<>(0, 100, 0, 1);
-//		bPanequan.setCenter(quantitySp);
-		QuanPane.getChildren().add(quantitySp);
-//		gPane.add(quantitySp, 1, 0);
-		
+
 		addWatchToCartBtn = new Button("Add Watch To Cart");
-//		bPanequan.setCenter(addWatchToCartBtn);
-		QuanPane.getChildren().add(addWatchToCartBtn);
-//		gPane.add(addWatchToCartBtn, 2, 0);
 		
-		QuanPane.setHgap(10);
+		
 		gPane.setAlignment(Pos.CENTER);
 		
 		clearCartBtn = new Button("Clear Cart");
@@ -174,8 +164,12 @@ public void init() {
 		bottomBtn.setPadding(new Insets(8, 0, 0, 0));
 		
 		gPane.add(selectWatchLbl, 0, 1);
-		
-		gPane.add(QuanPane, 1, 2);
+		gPane.add(quantityLbl, 1, 2);
+		gPane.add(quantitySp, 2, 2);
+		gPane.add(addWatchToCartBtn, 3, 2);
+		gPane.setHgap(7);
+
+//		gPane.add(QuanPane, 1, 2);
 		
 		bPanequan.setCenter(gPane);
 		
@@ -191,13 +185,10 @@ public void init() {
 		
 		bottomBtn.setAlignment(Pos.BOTTOM_CENTER);
 
-		buyWindow.getRightIcons().add(new CloseIcon(buyWindow));
-		buyWindow.getContentPane().getChildren().add(bPane1);
-
 		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
 		buyproductWindow.getContentPane().getChildren().add(bPane1);
 
-		scene = new Scene(buyproductWindow, 800, 700);
+//		scene = new Scene(buyproductWindow, 800, 700);
 		
 	}
 	
@@ -225,7 +216,6 @@ public void init() {
 				if(rsb.next()) {
 					watchbrand = rsb.getString("brandName");					
 				}
-				System.out.println(watchbrand);
 				
 				Watch watch = new Watch(watchid, watchname, watchbrand, watchprice, watchstock);
 				watchlist.add(watch);
