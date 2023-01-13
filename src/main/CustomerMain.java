@@ -57,7 +57,7 @@ public class CustomerMain{
 		
 		bPane.setTop(menuBar);
 		bPane.setBackground(new Background(new BackgroundFill(Color.GREY, CornerRadii.EMPTY, Insets.EMPTY)));
-		scene = new Scene(bPane,750,730);
+		scene = new Scene(bPane,1000,730);
 		
 //		BorderPane buyProductPage = new BuyProductForm();
 	}

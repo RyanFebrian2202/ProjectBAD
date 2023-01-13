@@ -77,15 +77,15 @@ public class TransactionHistoryForm {
 		// Codingan untuk Table View Transaction Header
 		tableView1 = new TableView<HeaderTransaction>();
 		TableColumn<HeaderTransaction, Integer> column1 = new TableColumn<>("Transaction ID");
-		column1.setMinWidth(333);
+		column1.setMinWidth(130);
 		column1.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, Integer>("TransactionID"));
 
 		TableColumn<HeaderTransaction, Integer> column2 = new TableColumn<>("User ID");
-		column2.setMinWidth(333);
+		column2.setMinWidth(120);
 		column2.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, Integer>("UserID"));
 
 		TableColumn<HeaderTransaction, Date> column3 = new TableColumn<>("Transaction Date");
-		column3.setMinWidth(333);
+		column3.setMinWidth(170);
 		column3.setCellValueFactory(new PropertyValueFactory<HeaderTransaction, Date>("TransactionDate"));
 
 		tableView1.getColumns().add(column1);
@@ -93,6 +93,10 @@ public class TransactionHistoryForm {
 		tableView1.getColumns().add(column3);
 		
 		tableView1.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Biar column nya ga bisa di resize
+		tableView1.setPadding(new Insets(10, 10, 10, 10));
+		tableView1.setMinHeight(250);
+		tableView1.setMaxHeight(250);	
+
 
 //		tableView1.getItems().add(new TransactionHistory(1, 2, "2022-05-25"));
 //		tableView1.getItems().add(new TransactionHistory(2, 2, "2022-05-25"));
@@ -102,9 +106,10 @@ public class TransactionHistoryForm {
 //		tableView1.getItems().add(new TransactionHistory(6, 2, "2022-05-28"));
 
 		VBox vbox = new VBox(tableView1);
+		vbox.setPadding(new Insets(10, 10, 10, 10));
 		
 		// Codingan untuk Selected Transaction
-		fPane.setPadding(new Insets(10, 0, 10, 7));
+		fPane.setPadding(new Insets(10, 0, 10, 0));
 		fPane.getChildren().add(selectedTransactionLbl);
 		fPane.setAlignment(Pos.CENTER_LEFT);
 		
@@ -145,13 +150,17 @@ public class TransactionHistoryForm {
 		
 		// Biar column nya ga bisa di resize
 		tableView2.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-				
-		VBox vbox2 = new VBox(tableView2);
-				
+		tableView2.setPadding(new Insets(10, 10, 10, 10));
+
+
+		
+		
 		// Atur layout utama
 		bPane.setTop(tableView1);
+		bPane.setAlignment(tableView1, Pos.CENTER);
 		bPane.setCenter(fPane);
 		bPane.setBottom(tableView2);
+		bPane.setAlignment(tableView2, Pos.CENTER);
 	}
 	
 	public void getWatchData() {
