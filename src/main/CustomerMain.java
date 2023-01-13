@@ -51,7 +51,7 @@ public class CustomerMain{
 		
 		
 		bPane.setTop(menuBar);
-		scene = new Scene(bPane,600,600);
+		scene = new Scene(bPane,750,730);
 		
 //		BorderPane buyProductPage = new BuyProductForm();
 	}

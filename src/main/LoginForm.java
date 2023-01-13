@@ -114,7 +114,7 @@ public class LoginForm{
 		border.setCenter(grid);
 		border.setBackground(bgL);
 		
-		scene = new Scene(border, 650, 600);
+		scene = new Scene(border, 500, 600);
 	}
 	
 

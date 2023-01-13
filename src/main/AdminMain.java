@@ -48,7 +48,7 @@ public class AdminMain{
 		
 		
 		bPane.setTop(menuBar);
-		scene = new Scene(bPane,800,500);
+		scene = new Scene(bPane,800,690);
 		
 	}
 	
