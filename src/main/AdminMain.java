@@ -48,7 +48,7 @@ public class AdminMain{
 		
 		
 		bPane.setTop(menuBar);
-		scene = new Scene(bPane,500,500);
+		scene = new Scene(bPane,800,500);
 		
 		logOutMI.setOnAction((event) -> {
 			System.out.println("Balik ke Login");

@@ -31,9 +31,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import jfxtras.labs.scene.control.window.CloseIcon;
+import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Watch;
-
+//___________________________________
+//window udh gw buat,blm gw masukin bpanenya, tinggal di intance kek yg laen -Vincent
+//
+//
+//
 public class ManageProductForm extends Application {
 	
 	Scene scene;
@@ -54,6 +60,7 @@ public class ManageProductForm extends Application {
 	Database db = Database.getConnection();
 	
 	Boolean kondisi = false;
+	Window manageWindow;
 	
 	public void getBrandData() {
 		String query = "SELECT * FROM `brand`";
@@ -81,6 +88,8 @@ public class ManageProductForm extends Application {
 		bPane = new BorderPane();
 		gPane = new GridPane();
 		fPane = new FlowPane();
+		
+		manageWindow = new Window("Manage Product");
 		
 		// Label Area
 		watchNameLbl = new Label ("Watch Name: ");
@@ -121,6 +130,9 @@ public class ManageProductForm extends Application {
 			watchBrandCBX.getItems().add(brandList.get(i).getBrandName());
 		}
 		watchBrandCBX.getSelectionModel().select(0);
+		
+		manageWindow.getRightIcons().add(new CloseIcon(manageWindow));
+//		manageWindow.getContentPane().getChildren().add(bPane);
 		
 		scene = new Scene(bPane, 750, 550);
 	}
@@ -297,16 +309,7 @@ public class ManageProductForm extends Application {
 						refreshTable();
 					});
 				
-				} else {	
-					
-					updateWatchBtn.setOnMouseClicked((event)->{
-					AlertError("You must select a watch from the table first!");
-					});
-					
-					deleteWatchBtn.setOnMouseClicked((event)->{
-					AlertError("You must select a watch from the table first!");
-					});
-				}
+				} 	
 			}
 		});
 	}
@@ -340,8 +343,15 @@ public class ManageProductForm extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Manage Product");
 		primaryStage.show();
+		
+		updateWatchBtn.setOnMouseClicked((event)->{
+			AlertError("You must select a watch from the table first!");
+		});
+			
+		deleteWatchBtn.setOnMouseClicked((event)->{
+			AlertError("You must select a watch from the table first!");
+		});
 	}
-
 }
 
 

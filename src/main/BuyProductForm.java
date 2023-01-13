@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Vector;
@@ -39,11 +38,18 @@ public class BuyProductForm{
 	
 	private static BuyProductForm instance;
 	
+	
+//	______________________________________________________________________________________________
+//	KEKNYA SEMUA PAGE DI DALEM MENU BAR, HARUS DIBUAT BORDER PANE DAH SOALNYA ERROR ERROR, TPI BISA JALAN.
+//	RUN AJA COBA
+//	- Vincent
+
 	Scene scene;
 	BorderPane bPane1, bPanequan;
 	GridPane gPane;
 	FlowPane bottomBtn, QuanPane;
 	Window buyWindow;
+	Window buyproductWindow;
 	
 	Label selectWatchLbl, quantityLbl, watchNameLbl;
 	Button addWatchToCartBtn, clearCartBtn, checkOutBtn;
@@ -73,13 +79,13 @@ public class BuyProductForm{
 		TableColumn<Watch, Integer> col4 = new TableColumn<Watch, Integer>("Watch Price");
 		TableColumn<Watch, Integer> col5 = new TableColumn<Watch, Integer>("Watch Stock");
 		
-		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("watchId"));
+		col1.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchID"));
 		col2.setCellValueFactory(new PropertyValueFactory<Watch, String>("WatchName"));
 		col3.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchBrand"));
 		col4.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchPrice"));
 		col5.setCellValueFactory(new PropertyValueFactory<Watch, Integer>("WatchStock"));
 		
-		watchTable.setMaxSize(650, 250);
+		watchTable.setMaxSize(673, 250);
 		
 //		set minimal ukuran kolom
 		col1.setMinWidth(80);
@@ -149,8 +155,7 @@ public class BuyProductForm{
 			}
 			rs.close();
 			
-			query = String.format("SELECT * FROM `cart` WHERE UserID = %d", LoginForm.getUser().getUserID());
-			rs = db.executeQuery(query);
+			rs = db.executeQuery("SELECT * FROM `cart`");
 			while(rs.next()) {
 				int watchid = rs.getInt("WatchID");
 				int customerid = rs.getInt("UserID");
@@ -222,6 +227,7 @@ public class BuyProductForm{
 		QuanPane = new FlowPane();
 		
 		buyWindow = new Window("Buy Product");
+		buyproductWindow = new Window("Buy Product");
 		
 		setTableWatch();
 		setTableCart();
@@ -279,8 +285,11 @@ public class BuyProductForm{
 
 		buyWindow.getRightIcons().add(new CloseIcon(buyWindow));
 		buyWindow.getContentPane().getChildren().add(bPane1);
-		
-		scene = new Scene(bPane1, 750, 700);
+
+		buyproductWindow.getRightIcons().add(new CloseIcon(buyproductWindow));
+		buyproductWindow.getContentPane().getChildren().add(bPane1);
+
+		scene = new Scene(buyproductWindow, 800, 700);
 		
 	}
 	
@@ -299,19 +308,19 @@ public class BuyProductForm{
 		error.showAndWait();
 	}
 	
-	public void setCartData() {
+	public void Checkout() {
 		System.out.println(watchId);
 		System.out.println();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/mm/yyyy");
 		LocalDate now = LocalDate.now();
-		
-		String query = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `UserID`, `TransactionDate`) " + "VALUES ('%d','%d','%d')"
-				, 0, 0, now);
+		System.out.println(now);
+		String query = String.format("INSERT INTO `headertransaction` " + "(`UserID`, `TransactionDate`) " + "VALUES ('%d','%s')"
+				, 0, now);
 				
 		db.executeUpdate(query);
 				
 		System.out.println();
-//		String query1 = String.format("INSERT INTO `headertransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
+//		String query1 = String.format("INSERT INTO `detailtransaction` " + "(`TransactionID`, `WatchID`, `Quantity`) " + "VALUES ('%d','%d','%d')"
 //				, 0, 0, password, gendervalue, roledefault);
 						
 //		db.executeUpdate(query1);
@@ -345,7 +354,11 @@ public class BuyProductForm{
 					info.setContentText("Checkout successful!");
 					
 //					Masukin data cart ke transaction
+					Checkout();
 					
+					
+					
+//					hapus cart
 					cartlist.clear();
 					refreshTable();
 					info.showAndWait();
