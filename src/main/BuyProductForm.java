@@ -306,10 +306,7 @@ public void init() {
 		error.showAndWait();
 	}
 	
-	public void Checkout() {
-		System.out.println(watchId);
-		System.out.println();
-		
+	public void Checkout() {		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date now = new Date();
 		now = Calendar.getInstance().getTime();
