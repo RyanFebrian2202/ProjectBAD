@@ -35,11 +35,7 @@ import jfxtras.labs.scene.control.window.CloseIcon;
 import jfxtras.labs.scene.control.window.Window;
 import model.Brand;
 import model.Watch;
-//___________________________________
-//window udh gw buat,blm gw masukin bpanenya, tinggal di intance kek yg laen -Vincent
-//
-//
-//
+
 public class ManageProductForm {
 	
 	private static ManageProductForm instance;

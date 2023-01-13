@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -20,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableSelectionModel;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -35,12 +37,7 @@ import model.Cart;
 import model.Watch;
 
 public class ManageBrandForm{
-//	__________________________________
-//	Tinggal buat dia keliatan sampe bwah, soalnya masih kepotong -vincent
-//	
-//	
-//	
-//	
+
 	private static ManageBrandForm instance;
 	
 //	Scene scene;
@@ -159,11 +156,23 @@ public class ManageBrandForm{
 	}
 	
 	public void addBrand() {
+		
 		insertBrandBtn.setOnMouseClicked((event)->{
-			String query = String.format("INSERT INTO `brand`(`BrandName`) VALUES ('%s')", brandNameTF.getText());
-			db.executeUpdate(query);
-			brandNameTF.setText("");
-			refreshTable();
+			
+			if (brandNameTF.getText().equals("")) {
+				
+			}else {
+				String query = String.format("INSERT INTO `brand`(`BrandName`) VALUES ('%s')", brandNameTF.getText());
+				db.executeUpdate(query);
+				brandNameTF.setText("");
+				refreshTable();
+				
+				Alert info = new Alert(AlertType.INFORMATION);
+				info.setHeaderText("Message");
+				info.setContentText("New brand successfully inserted!");
+				info.showAndWait();
+			}
+			
 		});
 	}
 	
@@ -182,16 +191,34 @@ public class ManageBrandForm{
 					brandNameTF.setText(newValue.getBrandName());
 					
 					updateBrandBtn.setOnMouseClicked((event)->{
-						String query = String.format("UPDATE `brand` SET `BrandName`='%s' WHERE `BrandID` = %d", brandNameTF.getText(), newValue.getBrandID());
-						db.executeUpdate(query);
-						brandNameTF.setText("");
-						refreshTable();
+						
+						if (!brandNameTF.getText().equals("")) {
+							
+							String query = String.format("UPDATE `brand` SET `BrandName`='%s' WHERE `BrandID` = %d", brandNameTF.getText(), newValue.getBrandID());
+							db.executeUpdate(query);
+							brandNameTF.setText("");
+							refreshTable();
+							brandNameTF.setText("");
+
+							
+							Alert info = new Alert(AlertType.INFORMATION);
+							info.setHeaderText("Message");
+							info.setContentText("Brand successfully updated!");
+							info.showAndWait();
+						}
+						
 					});
 					
 					deleteBrandBtn.setOnMouseClicked((event)->{
 						String query = String.format("DELETE FROM `brand` WHERE `BrandID` = %d", newValue.getBrandID());
 						db.executeUpdate(query);
 						refreshTable();
+						
+						Alert info = new Alert(AlertType.INFORMATION);
+						info.setHeaderText("Message");
+						info.setContentText("Brand successfully deleted!");
+						info.showAndWait();
+						
 					});
 				}
 			}
@@ -204,6 +231,21 @@ public class ManageBrandForm{
 		refreshTable();
 		addBrand();
 		editTable();
+		
+		updateBrandBtn.setOnMouseClicked(e -> {
+			Alert error = new Alert(AlertType.ERROR);
+			error.setHeaderText("Error");
+			error.setContentText("You must select a brand from the table first!");
+			error.showAndWait();
+		});
+		
+		deleteBrandBtn.setOnMouseClicked(e -> {
+			Alert error = new Alert(AlertType.ERROR);
+			error.setHeaderText("Error");
+			error.setContentText("You must select a brand from the table first!");
+			error.showAndWait();
+		});
+		
 		
 		return windowBrand;
 	}
