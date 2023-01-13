@@ -21,13 +21,13 @@ public class MainStage {
 	public void setStage(Stage stage) {
 		this.stage = stage;
 	}
-
-	public void setTitle(String title) {
-		this.stage.setTitle(title);
-	}
 	
 	public void setScene(Scene scene) {
 		this.stage.setScene(scene);
+	}
+
+	public void setTitle(String title) {
+		this.stage.setTitle(title);
 	}
 	
 	public void show() {
