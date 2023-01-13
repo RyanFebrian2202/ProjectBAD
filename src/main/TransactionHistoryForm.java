@@ -206,49 +206,14 @@ public class TransactionHistoryForm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		if(transactionID>0) {
-			String queryDetail = String.format("SELECT * FROM `detailtransaction` WHERE TransactionID = %d",transactionID);
-			rs = db.executeQuery(queryDetail);
-			
-			try {
-				while(rs.next()) {
-					int watchID = rs.getInt("WatchID");
-					int quantity = rs.getInt("Quantity");
-					String watchName = null;
-					String watchBrand = null;
-					String watchPrice = null;
-					String subTotal = null;
-					
-					for (int i = 0; i<watchList.size(); i++) {
-						if(watchList.get(i).getWatchID() == watchID) {
-							watchName = watchList.get(i).getWatchName();
-							watchBrand = watchList.get(i).getWatchBrand();
-							watchPrice = "$" + Integer.toString(watchList.get(i).getWatchPrice());
-							subTotal = "$" + Integer.toString(watchList.get(i).getWatchPrice() * quantity);
-						}
-					}
-					
-					DetailTransaction detailTransaction = new DetailTransaction(transactionID, watchID, quantity, watchName, watchBrand, watchPrice, subTotal);
-					transactionDetailList.add(detailTransaction);
-				}
-				rs.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 	
 	public void refreshTable() {
 		transactionList.clear();
-		transactionDetailList.clear();
 		watchList.clear();
 		getData();
 		ObservableList<HeaderTransaction> transactionObs = FXCollections.observableArrayList(transactionList);
-		ObservableList<DetailTransaction> detailTransactionObs = FXCollections.observableArrayList(transactionDetailList);
 		tableView1.setItems(transactionObs);
-		tableView2.setItems(detailTransactionObs);
 	}
 	
 	public void selectTable() {
@@ -256,10 +221,42 @@ public class TransactionHistoryForm {
 			@Override
 			public void changed(ObservableValue<? extends HeaderTransaction> observable, HeaderTransaction oldValue, HeaderTransaction newValue) {
 				if (newValue != null) {
+					transactionDetailList.clear();
 					transactionID = newValue.getTransactionID();
 					selectedTransactionLbl.setText("Selected Transaction: " + "Transaction " + transactionID);
+					
+					String queryDetail = String.format("SELECT * FROM `detailtransaction` WHERE TransactionID = %d",transactionID);
+					ResultSet rs = db.executeQuery(queryDetail);
+					
+					try {
+						while(rs.next()) {
+							int watchID = rs.getInt("WatchID");
+							int quantity = rs.getInt("Quantity");
+							String watchName = null;
+							String watchBrand = null;
+							String watchPrice = null;
+							String subTotal = null;
+							
+							for (int i = 0; i<watchList.size(); i++) {
+								if(watchList.get(i).getWatchID() == watchID) {
+									watchName = watchList.get(i).getWatchName();
+									watchBrand = watchList.get(i).getWatchBrand();
+									watchPrice = "$" + Integer.toString(watchList.get(i).getWatchPrice());
+									subTotal = "$" + Integer.toString(watchList.get(i).getWatchPrice() * quantity);
+								}
+							}
+							
+							DetailTransaction detailTransaction = new DetailTransaction(transactionID, watchID, quantity, watchName, watchBrand, watchPrice, subTotal);
+							transactionDetailList.add(detailTransaction);
+						}
+						rs.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-				refreshTable();
+				ObservableList<DetailTransaction> detailTransactionObs = FXCollections.observableArrayList(transactionDetailList);
+				tableView2.setItems(detailTransactionObs);
 			}
 		});
 	}
