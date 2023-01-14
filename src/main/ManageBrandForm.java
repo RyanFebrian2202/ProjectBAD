@@ -205,21 +205,33 @@ public class ManageBrandForm{
 							info.setHeaderText("Message");
 							info.setContentText("Brand successfully updated!");
 							info.showAndWait();
+						} else {
+							Alert error = new Alert(AlertType.ERROR);
+							error.setHeaderText("Error");
+							error.setContentText("You must select a brand from the table first!");
+							error.showAndWait();
 						}
 						
 					});
 					
 					deleteBrandBtn.setOnMouseClicked((event)->{
-						String query = String.format("DELETE FROM `brand` WHERE `BrandID` = %d", newValue.getBrandID());
-						db.executeUpdate(query);
-						brandNameTF.setText("");
-						refreshTable();
 						
-						Alert info = new Alert(AlertType.INFORMATION);
-						info.setHeaderText("Message");
-						info.setContentText("Brand successfully deleted!");
-						info.showAndWait();
-						
+						if(!brandNameTF.getText().equals("")) {
+							String query = String.format("DELETE FROM `brand` WHERE `BrandID` = %d", newValue.getBrandID());
+							db.executeUpdate(query);
+							brandNameTF.setText("");
+							refreshTable();
+							
+							Alert info = new Alert(AlertType.INFORMATION);
+							info.setHeaderText("Message");
+							info.setContentText("Brand successfully deleted!");
+							info.showAndWait();
+						} else {
+							Alert error = new Alert(AlertType.ERROR);
+							error.setHeaderText("Error");
+							error.setContentText("You must select a brand from the table first!");
+							error.showAndWait();
+						}
 					});
 				}
 			}

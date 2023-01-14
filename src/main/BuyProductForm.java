@@ -275,6 +275,7 @@ public void init() {
 				db.executeUpdate(query);
 				quantitySp.getValueFactory().setValue(0);
 				selectWatchLbl.setText("Selected Watch: None");
+				watchId = 0;
 				refreshTable();
 			}
 		});

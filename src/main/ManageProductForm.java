@@ -284,37 +284,46 @@ public class ManageProductForm {
 							watchBrandCBX.getSelectionModel().select(i+1);
 						}
 					}
-					
-						
+											
 					updateWatchBtn.setOnMouseClicked((event)->{
-						String brandName = watchBrandCBX.getValue();
-						brandList.clear();
-						getBrandData();
-						int brandID = 1;
-						for(int i = 0; i<brandList.size(); i++) {
-							if(brandList.get(i).getBrandName().equals(brandName)) {
-								brandID = brandList.get(i).getBrandID();
+						if (watchNameTF.getText().equals("") || watchPriceTF.getText().equals("") || watchStockSpn.getValue() == 0 || watchBrandCBX.equals("Choose One")) {
+							System.out.println("Test");
+							AlertError("You must select a watch from the table first!");
+						} else {
+							String brandName = watchBrandCBX.getValue();
+							brandList.clear();
+							getBrandData();
+							int brandID = 1;
+							for(int i = 0; i<brandList.size(); i++) {
+								if(brandList.get(i).getBrandName().equals(brandName)) {
+									brandID = brandList.get(i).getBrandID();
+								}
 							}
+							String query = String.format("UPDATE `watch` SET `BrandID`='%d',`WatchName`='%s',`WatchPrice`='%d',`WatchStock`='%d' WHERE `WatchID` = %d", brandID,watchNameTF.getText(),Integer.parseInt(watchPriceTF.getText()),watchStockSpn.getValue(),newValue.getWatchID());
+							db.executeUpdate(query);
+							watchNameTF.setText("");
+							watchPriceTF.setText("");
+							watchStockSpn.getValueFactory().setValue(0);
+							watchBrandCBX.getSelectionModel().select(0);
+							AlertInformation("Watch successfully updated!");
+							refreshTable();
 						}
-						String query = String.format("UPDATE `watch` SET `BrandID`='%d',`WatchName`='%s',`WatchPrice`='%d',`WatchStock`='%d' WHERE `WatchID` = %d", brandID,watchNameTF.getText(),Integer.parseInt(watchPriceTF.getText()),watchStockSpn.getValue(),newValue.getWatchID());
-						db.executeUpdate(query);
-						watchNameTF.setText("");
-						watchPriceTF.setText("");
-						watchStockSpn.getValueFactory().setValue(0);
-						watchBrandCBX.getSelectionModel().select(0);
-						AlertInformation("Watch successfully updated!");
-						refreshTable();
 					});
 						
 					deleteWatchBtn.setOnMouseClicked((event)->{
-						String query = String.format("DELETE FROM `watch` WHERE `WatchID` = %d", newValue.getWatchID());
-						db.executeUpdate(query);
-						watchNameTF.setText("");
-						watchPriceTF.setText("");
-						watchStockSpn.getValueFactory().setValue(0);
-						watchBrandCBX.getSelectionModel().select(0);
-						AlertInformation("Watch successfully deleted!");
-						refreshTable();
+						if (watchNameTF.getText().equals("") || watchPriceTF.getText().equals("") || watchStockSpn.getValue() == 0 || watchBrandCBX.equals("Choose One")) {
+							System.out.println("Test");
+							AlertError("You must select a watch from the table first!");
+						} else {
+							String query = String.format("DELETE FROM `watch` WHERE `WatchID` = %d", newValue.getWatchID());
+							db.executeUpdate(query);
+							watchNameTF.setText("");
+							watchPriceTF.setText("");
+							watchStockSpn.getValueFactory().setValue(0);
+							watchBrandCBX.getSelectionModel().select(0);
+							AlertInformation("Watch successfully deleted!");
+							refreshTable();
+						}
 					});
 						
 				}		
