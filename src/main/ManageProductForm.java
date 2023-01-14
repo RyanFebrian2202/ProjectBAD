@@ -239,8 +239,11 @@ public class ManageProductForm {
 		insertWatchBtn.setOnMouseClicked((event)->{
 			String brandName = watchBrandCBX.getValue();
 			
-			if(brandName.equals("Choose One")) {
-				//error
+			if(brandName.equals("Choose One") || watchNameTF.getText().equals("") || watchPriceTF.getText().equals("") || watchStockSpn.getValue() == 0) {
+				Alert error = new Alert(AlertType.ERROR);
+				error.setHeaderText("Error");
+				error.setContentText("Data needed not complete!");
+				error.showAndWait();
 			} else {
 				brandList.clear();
 				getBrandData();

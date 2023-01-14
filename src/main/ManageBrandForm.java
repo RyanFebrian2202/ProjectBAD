@@ -160,7 +160,10 @@ public class ManageBrandForm{
 		insertBrandBtn.setOnMouseClicked((event)->{
 			
 			if (brandNameTF.getText().equals("")) {
-				
+				Alert error = new Alert(AlertType.ERROR);
+				error.setHeaderText("Error");
+				error.setContentText("Data needed not complete!");
+				error.showAndWait();
 			}else {
 				String query = String.format("INSERT INTO `brand`(`BrandName`) VALUES ('%s')", brandNameTF.getText());
 				db.executeUpdate(query);
