@@ -55,6 +55,8 @@ public class ManageBrandForm{
 	
 	Vector<Brand> brandList = new Vector<Brand>();
 	
+	int brandID = 0;
+	
 	public static ManageBrandForm getInstance() {
 		if (instance == null) {
 			instance = new ManageBrandForm();
@@ -191,15 +193,17 @@ public class ManageBrandForm{
 			@Override
 			public void changed(ObservableValue<? extends Brand> observable, Brand oldValue, Brand newValue) {
 				if (newValue != null) {
+					brandID = newValue.getBrandID();
 					brandNameTF.setText(newValue.getBrandName());
 					
 					updateBrandBtn.setOnMouseClicked((event)->{
 						
-						if (!brandNameTF.getText().equals("")) {
+						if (brandID > 0) {
 							
 							String query = String.format("UPDATE `brand` SET `BrandName`='%s' WHERE `BrandID` = %d", brandNameTF.getText(), newValue.getBrandID());
 							db.executeUpdate(query);
 							brandNameTF.setText("");
+							brandID = 0;
 							refreshTable();
 							brandNameTF.setText("");
 
@@ -219,10 +223,11 @@ public class ManageBrandForm{
 					
 					deleteBrandBtn.setOnMouseClicked((event)->{
 						
-						if(!brandNameTF.getText().equals("")) {
+						if(brandID > 0) {
 							String query = String.format("DELETE FROM `brand` WHERE `BrandID` = %d", newValue.getBrandID());
 							db.executeUpdate(query);
 							brandNameTF.setText("");
+							brandID = 0;
 							refreshTable();
 							
 							Alert info = new Alert(AlertType.INFORMATION);
